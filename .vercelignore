@@ -1,0 +1,41 @@
+# ═══════════════════════════════════════════════════════════════
+# .vercelignore — arquivos que NAO devem ir para producao
+# ═══════════════════════════════════════════════════════════════
+
+# Arquivos de teste / protótipo
+formulario-whatsapp-TESTE.html
+formulario-teste-qualificacao.html
+formulario-universal.html
+
+# Relatorios e planilhas internas
+*.xlsx
+
+# Screenshots privados (dados pessoais de leads)
+*.jpeg
+*.jpg
+
+# Bases de dados internas
+parceiros.json
+hipro_estetica_posts.json
+hipromed_candidates.json
+unyque_posts.json
+unyque_posts_nossos.json
+
+# Codigo backend que nao roda no Vercel
+google-apps-script.js
+create_urls_excel.py
+
+# Documentacao interna
+*.md
+
+# Configs / metadata
+.vercel
+.env
+.env.*
+.gitignore
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

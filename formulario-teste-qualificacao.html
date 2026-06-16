@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TESTE — Qualificação Anti-Leads Desqualificados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg-card: #171b24;
+      --bg-card-hover: #1c2030;
+      --border: #222738;
+      --border-hover: #2e3448;
+      --text: #f0f2f5;
+      --text-dim: #8b92a5;
+      --text-muted: #565e73;
+      --accent: #00b4d8;
+      --accent-rgb: 0, 180, 216;
+      --success: #10b981;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --info: #6366f1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .test-banner {
+      background: linear-gradient(90deg, var(--warn), #ea580c);
+      color: #0a0c10;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: 0.3px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(245, 158, 11, 0.3);
+    }
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    h1 .sub { font-size: 13px; color: var(--text-dim); font-weight: 500; display: block; margin-top: 4px; }
+    h2 { font-size: 18px; font-weight: 600; margin: 24px 0 6px; }
+    h2:first-of-type { margin-top: 16px; }
+    p.hint { color: var(--text-dim); font-size: 13px; margin-bottom: 16px; }
+
+    .group-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      margin: 18px 0 8px;
+      font-weight: 600;
+    }
+
+    .option-list { display: flex; flex-direction: column; gap: 8px; }
+    .option {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .option:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(2px);
+    }
+    .option.selected {
+      background: rgba(var(--accent-rgb), 0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .option .icon { font-size: 16px; }
+    .option.cliente { background: rgba(99, 102, 241, 0.06); border-color: rgba(99, 102, 241, 0.3); }
+    .option.cliente:hover { background: rgba(99, 102, 241, 0.12); }
+    .option.warn-option {
+      background: rgba(245, 158, 11, 0.06);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: var(--warn);
+    }
+    .option.warn-option:hover { background: rgba(245, 158, 11, 0.12); }
+
+    .input-group { margin: 12px 0; }
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-input.invalid { border-color: var(--danger); }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      font-family: inherit;
+      width: 100%;
+      margin-top: 12px;
+    }
+    .btn:hover:not(:disabled) { opacity: 0.9; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.secondary { background: var(--bg); border: 1px solid var(--border); }
+    .btn.danger { background: var(--danger); }
+    .btn.success { background: var(--success); }
+
+    .feedback-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.accept { background: rgba(16, 185, 129, 0.08); border: 1px solid var(--success); color: var(--success); }
+    .feedback-box.redirect { background: rgba(99, 102, 241, 0.08); border: 1px solid var(--info); color: #a5b4fc; }
+    .feedback-box.block { background: rgba(239, 68, 68, 0.08); border: 1px solid var(--danger); color: #fca5a5; }
+    .feedback-box.warn { background: rgba(245, 158, 11, 0.08); border: 1px solid var(--warn); color: var(--warn); }
+
+    /* Debug panel */
+    .debug {
+      background: #0d1014;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: sticky;
+      top: 70px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .debug h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .debug pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #a5b4fc;
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      line-height: 1.6;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-right: 6px;
+    }
+    .badge.profissional { background: var(--success); color: #064e3b; }
+    .badge.cliente { background: var(--info); color: #fff; }
+    .badge.empresario { background: #a855f7; color: #fff; }
+    .badge.investidor { background: #ec4899; color: #fff; }
+    .badge.blocked { background: var(--danger); color: #fff; }
+    .badge.reclassified { background: var(--warn); color: #1a1611; }
+
+    .test-cases {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .test-cases h3 { margin-bottom: 8px; }
+    .test-cases p { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .test-case-btn {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 12px;
+      text-align: left;
+      cursor: pointer;
+      margin-bottom: 6px;
+      font-family: inherit;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-case-btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+    .test-case-btn .expected { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat-value { font-size: 20px; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 2px; }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 8px 0;
+      margin-top: 12px;
+      font-family: inherit;
+    }
+    .back-btn:hover { color: var(--accent); }
+
+    .hidden { display: none !important; }
+
+    .legend {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.7;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .legend code {
+      background: var(--bg-card);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<div class="test-banner">
+  🧪 FORMULARIO DE TESTE — Nenhum dado e enviado ao RD/WhatsApp. Use para validar o novo fluxo de qualificacao antes de implementar em producao.
+</div>
+
+<div class="layout">
+
+  <!-- ═══════════ COLUNA PRINCIPAL: FORM ═══════════ -->
+  <div class="card">
+    <h1>
+      Teste de qualificacao do formulario
+      <span class="sub">Simula o fluxo C1 (whitelist) + C2 (blacklist) + C3 (reclassificacao server-side)</span>
+    </h1>
+
+    <!-- ─── STEP 1: Perfil inicial ─── -->
+    <div id="stepProfile">
+      <h2>Qual o seu perfil?</h2>
+      <p class="hint">Reproduzindo a primeira tela do formulario universal v2 (Contourline como exemplo).</p>
+
+      <div class="group-label">Profissionais</div>
+      <div class="option-list" id="profissionaisList">
+        <div class="option" data-tag="MEDICO" data-perfil="MEDICO" data-medico="SIM" data-has-sub="1">
+          <span class="icon">🩺</span><span>Medico(a)</span>
+        </div>
+        <div class="option" data-tag="PROFISSIONAL" data-perfil="PROFISSIONAL - Biomedico Esteta" data-medico="NAO">
+          <span class="icon">🧪</span><span>Biomedico(a) Esteta</span>
+        </div>
+        <div class="option" data-tag="PROFISSIONAL" data-perfil="PROFISSIONAL - Esteticista" data-medico="NAO">
+          <span class="icon">💆</span><span>Esteticista</span>
+        </div>
+        <div class="option" data-tag="PROFISSIONAL" data-perfil="PROFISSIONAL - Fisioterapeuta" data-medico="NAO">
+          <span class="icon">🤸</span><span>Fisioterapeuta Dermatofuncional</span>
+        </div>
+        <div class="option" data-tag="PROFISSIONAL" data-perfil="PROFISSIONAL - Tecnologo em Estetica" data-medico="NAO">
+          <span class="icon">🎓</span><span>Tecnologo(a) em Estetica</span>
+        </div>
+        <div class="option" data-tag="EMPRESARIO" data-perfil="EMPRESARIO / DONO DE CLINICA" data-medico="NAO">
+          <span class="icon">🏢</span><span>Dono(a) de Clinica / Spa</span>
+        </div>
+        <div class="option warn-option" data-tag="PROFISSIONAL" data-perfil="PROFISSIONAL - Outro" data-medico="NAO" data-other="1">
+          <span class="icon">➕</span><span>Outro profissional da area da estetica/saude</span>
+        </div>
+      </div>
+
+      <div class="group-label">Negocios</div>
+      <div class="option-list">
+        <div class="option" data-tag="INVESTIDOR" data-perfil="INVESTIDOR / LOCADORA" data-medico="NAO">
+          <span class="icon">💼</span><span>Empresario(a) / Investidor(a)</span>
+        </div>
+      </div>
+
+      <div class="group-label">Cliente</div>
+      <div class="option-list">
+        <div class="option cliente" data-tag="CLIENTE FINAL" data-perfil="CLIENTE FINAL - Quer tratamento" data-medico="NAO">
+          <span class="icon">✨</span><span>Quero fazer um tratamento</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 2: Whitelist expandida (C1) ─── -->
+    <div id="stepWhitelist" class="hidden">
+      <h2>Qual sua profissao exata?</h2>
+      <p class="hint">
+        Antes era um campo de texto livre que aceitava qualquer coisa.<br>
+        Agora <strong>C1 — whitelist expandida</strong>: voce escolhe uma profissao reconhecida da area, ou declara que nao atua na area.
+      </p>
+
+      <div class="option-list" id="whitelistList">
+        <!-- Profissoes whitelist sao renderizadas via JS -->
+      </div>
+
+      <button class="back-btn" onclick="resetToProfile()">&larr; Trocar perfil</button>
+    </div>
+
+    <!-- ─── STEP 3: Campo livre + Blacklist (C2 — defesa em profundidade) ─── -->
+    <div id="stepCustom" class="hidden">
+      <h2>Conta um pouco mais sobre sua profissao</h2>
+      <p class="hint">
+        <strong>C2 — blacklist semantica:</strong> se voce digitar uma profissao fora da area (cozinheira, professora, doméstica, etc.),
+        o sistema oferece o fluxo de cliente final em vez de mandar o lead pro SDR comercial.
+      </p>
+
+      <div class="input-group">
+        <input type="text" class="form-input" id="inputCustomProfession" placeholder="Ex: Naturopata estetica, Acupunturista, Tatuador..." autocomplete="off">
+      </div>
+
+      <div class="feedback-box" id="blacklistFeedback"></div>
+
+      <button class="btn" id="btnSubmitCustom" disabled onclick="submitCustom()">Continuar &rarr;</button>
+      <button class="back-btn" onclick="resetToProfile()">&larr; Trocar perfil</button>
+    </div>
+
+    <!-- ─── STEP 4: Confirmação cliente final (redirecionamento) ─── -->
+    <div id="stepConfirmCliente" class="hidden">
+      <h2>Encontramos algo importante</h2>
+      <div class="feedback-box warn show" id="confirmClienteMsg"></div>
+
+      <div class="option-list" style="margin-top: 16px;">
+        <div class="option cliente" onclick="acceptAsCliente()">
+          <span class="icon">✨</span><span>Sim, sou cliente — quero fazer um tratamento</span>
+        </div>
+        <div class="option" onclick="insistirComoProfissional()">
+          <span class="icon">⚠️</span><span>Nao, sou mesmo da area profissional — me deixe continuar</span>
+        </div>
+      </div>
+
+      <button class="back-btn" onclick="resetToProfile()">&larr; Trocar perfil</button>
+    </div>
+
+    <!-- ─── STEP 5: Confirmação para profissões "cinzentas" (ex: técnica de enfermagem) ─── -->
+    <div id="stepConfirmGrey" class="hidden">
+      <h2>Voce atua em clinica de estetica/medicina estetica?</h2>
+      <div class="feedback-box warn show" id="confirmGreyMsg"></div>
+
+      <div class="option-list" style="margin-top: 16px;">
+        <div class="option" onclick="confirmGreyYes()">
+          <span class="icon">✅</span><span>Sim, atuo em clinica de estetica/medicina estetica</span>
+        </div>
+        <div class="option cliente" onclick="confirmGreyNo()">
+          <span class="icon">✨</span><span>Nao, trabalho em outra area (hospital, posto, asilo, etc.)</span>
+        </div>
+      </div>
+
+      <button class="back-btn" onclick="resetToProfile()">&larr; Trocar perfil</button>
+    </div>
+
+    <!-- ─── RESULTADO: Simulação de envio ─── -->
+    <div id="stepResult" class="hidden">
+      <h2 id="resultTitle">Resultado da classificacao</h2>
+      <div class="feedback-box show" id="resultBox"></div>
+
+      <h2>Payload que seria enviado</h2>
+      <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #a5b4fc; background: var(--bg); padding: 14px; border-radius: 10px; border: 1px solid var(--border); overflow-x: auto; line-height: 1.6;" id="resultPayload"></pre>
+
+      <button class="btn secondary" onclick="resetToProfile()">Testar outro cenario &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ COLUNA LATERAL: DEBUG + CASOS DE TESTE ═══════════ -->
+  <div class="debug">
+    <h3>🔍 Estado em tempo real</h3>
+    <pre id="debugState">aguardando interacao...</pre>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="statAccept">0</div>
+        <div class="stat-label">Aceitos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="statRedirect">0</div>
+        <div class="stat-label">Redirec.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="statBlock">0</div>
+        <div class="stat-label">Bloqueados</div>
+      </div>
+    </div>
+
+    <div class="test-cases">
+      <h3>🧪 Casos de teste</h3>
+      <p>Clique para simular leads reais que vieram do sheets:</p>
+
+      <button class="test-case-btn" onclick="runTestCase('cozinheira')">
+        <span>marcia cristiane — cozinheira</span>
+        <span class="expected">→ REDIRECT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('pedagoga')">
+        <span>marisa duarte — pedagoga</span>
+        <span class="expected">→ REDIRECT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('professora')">
+        <span>regina gomes — professora</span>
+        <span class="expected">→ REDIRECT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('tecnica_enfermagem')">
+        <span>edna candido — tecnica de enfermagem</span>
+        <span class="expected">→ CONFIRM</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('assistente_social')">
+        <span>judite dias — assistente social</span>
+        <span class="expected">→ REDIRECT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('nutricionista')">
+        <span>raquel ribeiro — nutricionista</span>
+        <span class="expected">→ CONFIRM</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('enfermeira_esteta')">
+        <span>caso valido: enfermeira esteta</span>
+        <span class="expected">→ ACCEPT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('farmaceutica')">
+        <span>caso valido: farmaceutica esteta</span>
+        <span class="expected">→ ACCEPT</span>
+      </button>
+      <button class="test-case-btn" onclick="runTestCase('bypass')">
+        <span>tentativa de bypass: "doutora cozinha"</span>
+        <span class="expected">→ REDIRECT</span>
+      </button>
+    </div>
+
+    <div class="legend">
+      <strong style="color: var(--text);">Legenda da classificacao:</strong><br>
+      <span class="badge profissional">PROFISSIONAL</span> lead vai pro SDR comercial<br>
+      <span class="badge cliente">CLIENTE FINAL</span> lead vai pro fluxo de tratamento (parceiros)<br>
+      <span class="badge empresario">EMPRESARIO</span> lead vai pro SDR (alta prioridade)<br>
+      <span class="badge investidor">INVESTIDOR</span> lead vai pro SDR (investidor/locadora)<br>
+      <span class="badge reclassified">RECLASS.</span> foi enviado como X mas reclassificado para Y<br>
+      <span class="badge blocked">BLOCK</span> bloqueado server-side (C3)
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURACAO — WHITELIST / BLACKLIST / GREY ZONE
+// ═══════════════════════════════════════════════════════════════
+
+// C1 — Profissoes aceitas no fluxo "Outro profissional"
+// Adicione/remova conforme o ICP de cada marca
+const WHITELIST_PROFISSOES = [
+  { label: 'Enfermeiro(a) Esteta', perfil: 'PROFISSIONAL - Enfermeiro Esteta', icon: '💉' },
+  { label: 'Farmaceutico(a) Esteta', perfil: 'PROFISSIONAL - Farmaceutico Esteta', icon: '💊' },
+  { label: 'Dentista (Harmonizacao Orofacial)', perfil: 'PROFISSIONAL - Dentista HOF', icon: '🦷' },
+  { label: 'Terapeuta Capilar / Tricologista', perfil: 'PROFISSIONAL - Tricologista', icon: '💇' },
+  { label: 'Cosmetologo(a)', perfil: 'PROFISSIONAL - Cosmetologo', icon: '🧴' },
+  { label: 'Nutricionista (atende em clinica de estetica)', perfil: 'PROFISSIONAL - Nutricionista Esteta', icon: '🥗', grey: true },
+  { label: 'Podologo(a)', perfil: 'PROFISSIONAL - Podologo', icon: '🦶' },
+  { label: 'Naturopata / Terapeuta Holistico', perfil: 'PROFISSIONAL - Naturopata', icon: '🌿' },
+  { label: 'Micropigmentador(a) profissional', perfil: 'PROFISSIONAL - Micropigmentador', icon: '✒️' },
+  { label: 'Massoterapeuta (atende em clinica de estetica)', perfil: 'PROFISSIONAL - Massoterapeuta Esteta', icon: '🤲', grey: true },
+];
+
+// Opcao especial: redireciona para fluxo cliente final
+const OPCAO_NAO_E_PROFISSIONAL = {
+  label: 'Minha profissao nao esta nessa lista — sou cliente buscando tratamento',
+  perfil: 'CLIENTE FINAL - Auto-reclassificado',
+  redirectToCliente: true,
+  icon: '✨'
+};
+
+// C2 — Blacklist semantica (regex parcial, case-insensitive, sem acento)
+// Se o usuario digitar isso no campo livre, redireciona para cliente final
+const BLACKLIST = [
+  { match: /cozinheir|cozinha/i,           reason: 'Cozinha nao e area da estetica/saude profissional' },
+  { match: /domestic|faxineir|diarist/i,   reason: 'Servicos domesticos nao sao area da estetica profissional' },
+  { match: /professor|pedagog|educador/i,  reason: 'Educacao nao e area da estetica profissional' },
+  { match: /recepcionist|secretari/i,      reason: 'Funcao administrativa, nao tecnica' },
+  { match: /vendedor|balconist|atendent/i, reason: 'Funcao comercial, nao tecnica' },
+  { match: /dona de casa|dono de casa/i,   reason: 'Nao se aplica' },
+  { match: /aposentad|desempregad/i,       reason: 'Nao tem atuacao profissional ativa na area' },
+  { match: /estudante/i,                   reason: 'Estudante ainda nao atua profissionalmente' },
+  { match: /motorist|pintor|costureir/i,   reason: 'Profissao fora da area da estetica/saude' },
+  { match: /assistente social/i,           reason: 'Servico social nao atende com equipamentos esteticos' },
+  { match: /baba|bab[aá] /i,               reason: 'Cuidado infantil nao e area da estetica' },
+  { match: /cuidador|cuidadora de idoso/i, reason: 'Cuidado de idosos nao e estetica profissional' },
+  { match: /aux(iliar)? (de produc|de cozinh|administrat|de servic)/i, reason: 'Funcao auxiliar fora da area' },
+  { match: /operador(a)? de caixa/i,       reason: 'Funcao comercial, nao tecnica' },
+];
+
+// Profissoes "cinzentas" — pedem confirmacao (pode atender em clinica de estetica, mas tambem em hospital/posto)
+const GREY_ZONE = [
+  { match: /t[eé]cnic[ao] de enfermagem|t[eé]cnico em enfermagem/i, label: 'tecnica de enfermagem' },
+  { match: /^enfermeir[ao]$/i,                                       label: 'enfermeiro(a)' },
+  { match: /^nutricionista$/i,                                       label: 'nutricionista' },
+  { match: /^massoterapeuta$/i,                                      label: 'massoterapeuta' },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════════════════════════
+let state = {
+  perfil: null,         // objeto do perfil selecionado
+  reclassified: false,  // true quando o sistema mudou a tag
+  reclassifiedFrom: null,
+  reclassifiedReason: null,
+  blockedAt: null,      // 'C1' | 'C2' | 'C3' | null
+  // estatisticas
+  counters: { accept: 0, redirect: 0, block: 0 }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // bind clicks nos perfis principais
+  document.querySelectorAll('#stepProfile .option').forEach(opt => {
+    opt.addEventListener('click', () => onProfileClick(opt));
+  });
+
+  // renderiza whitelist
+  const wlList = document.getElementById('whitelistList');
+  WHITELIST_PROFISSOES.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerHTML = `<span class="icon">${p.icon}</span><span>${p.label}</span>`;
+    div.onclick = () => onWhitelistClick(p);
+    wlList.appendChild(div);
+  });
+  // opcao "nao esta na lista"
+  const naoEhDiv = document.createElement('div');
+  naoEhDiv.className = 'option cliente';
+  naoEhDiv.innerHTML = `<span class="icon">${OPCAO_NAO_E_PROFISSIONAL.icon}</span><span>${OPCAO_NAO_E_PROFISSIONAL.label}</span>`;
+  naoEhDiv.onclick = () => onWhitelistClick(OPCAO_NAO_E_PROFISSIONAL);
+  wlList.appendChild(naoEhDiv);
+
+  // pequeno botao discreto: "ainda nao encontrei, deixa eu digitar"
+  const livreDiv = document.createElement('div');
+  livreDiv.className = 'option warn-option';
+  livreDiv.style.fontSize = '13px';
+  livreDiv.style.opacity = '0.7';
+  livreDiv.innerHTML = `<span class="icon">✏️</span><span>Nao encontrei, deixa eu digitar (verificacao adicional)</span>`;
+  livreDiv.onclick = () => goToStep('stepCustom');
+  wlList.appendChild(livreDiv);
+
+  // input custom: validacao em tempo real (C2)
+  const input = document.getElementById('inputCustomProfession');
+  input.addEventListener('input', onCustomInput);
+
+  updateDebug();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS — perfis principais
+// ═══════════════════════════════════════════════════════════════
+function onProfileClick(el) {
+  document.querySelectorAll('#stepProfile .option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+
+  state.perfil = {
+    tag: el.dataset.tag,
+    perfil: el.dataset.perfil,
+    medico: el.dataset.medico,
+    label: el.querySelector('span:last-child').textContent
+  };
+  state.reclassified = false;
+  state.blockedAt = null;
+
+  if (el.dataset.other === '1') {
+    // C1 — Vai pra whitelist expandida (antes era campo livre direto)
+    goToStep('stepWhitelist');
+  } else {
+    // Perfil normal: simula submit direto
+    setTimeout(() => simulateSubmit('accept'), 300);
+  }
+  updateDebug();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS — whitelist (C1)
+// ═══════════════════════════════════════════════════════════════
+function onWhitelistClick(p) {
+  if (p.redirectToCliente) {
+    // Auto-reclassifica como CLIENTE FINAL
+    state.perfil = {
+      tag: 'CLIENTE FINAL',
+      perfil: p.perfil,
+      medico: 'NAO',
+      label: 'Cliente final (auto-reclassificado pela whitelist)'
+    };
+    state.reclassified = true;
+    state.reclassifiedFrom = 'PROFISSIONAL';
+    state.reclassifiedReason = 'Usuario declarou que sua profissao nao esta na lista de profissoes aceitas';
+    simulateSubmit('redirect');
+  } else if (p.grey) {
+    // Profissao cinzenta: pede confirmacao adicional
+    state.perfil = {
+      tag: 'PROFISSIONAL',
+      perfil: p.perfil,
+      medico: 'NAO',
+      label: p.label
+    };
+    document.getElementById('confirmGreyMsg').innerHTML =
+      `Voce selecionou <strong>${p.label}</strong>. Algumas pessoas nessa profissao atuam em clinicas de estetica (caso em que faz sentido falar conosco), outras atuam em hospital, posto de saude, asilo, etc. (caso em que nao oferecemos equipamento direto). Pode confirmar?`;
+    goToStep('stepConfirmGrey');
+  } else {
+    // Profissao validada pela whitelist
+    state.perfil = {
+      tag: 'PROFISSIONAL',
+      perfil: p.perfil,
+      medico: 'NAO',
+      label: p.label
+    };
+    simulateSubmit('accept');
+  }
+  updateDebug();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS — confirmacao zona cinzenta
+// ═══════════════════════════════════════════════════════════════
+function confirmGreyYes() { simulateSubmit('accept'); }
+function confirmGreyNo() {
+  state.perfil = {
+    tag: 'CLIENTE FINAL',
+    perfil: 'CLIENTE FINAL - Auto-reclassificado (nao atua em clinica esteta)',
+    medico: 'NAO',
+    label: 'Cliente final (atua fora da estetica)'
+  };
+  state.reclassified = true;
+  state.reclassifiedFrom = 'PROFISSIONAL';
+  state.reclassifiedReason = 'Profissao cinzenta + usuario declarou que nao atua em clinica de estetica';
+  simulateSubmit('redirect');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS — campo livre + blacklist (C2)
+// ═══════════════════════════════════════════════════════════════
+function onCustomInput(e) {
+  const val = e.target.value.trim();
+  const btn = document.getElementById('btnSubmitCustom');
+  const fb = document.getElementById('blacklistFeedback');
+
+  if (val.length < 2) {
+    btn.disabled = true;
+    fb.classList.remove('show');
+    return;
+  }
+
+  const black = checkBlacklist(val);
+  if (black) {
+    fb.className = 'feedback-box warn show';
+    fb.innerHTML = `⚠️ <strong>Detectamos:</strong> "${val}"<br><strong>Motivo:</strong> ${black.reason}<br><br>Esse formulario e para profissionais que atuam com equipamentos esteticos/medicos. Continuando vai te redirecionar para o fluxo de cliente final (tratamento estetico em clinica parceira).`;
+    btn.disabled = false;
+    btn.textContent = 'Quero ser atendido como cliente final →';
+    btn.classList.add('secondary');
+    btn.onclick = () => {
+      state.perfil = {
+        tag: 'CLIENTE FINAL',
+        perfil: 'CLIENTE FINAL - Blacklist redirect',
+        medico: 'NAO',
+        label: `Cliente final (digitou "${val}")`
+      };
+      state.reclassified = true;
+      state.reclassifiedFrom = 'PROFISSIONAL';
+      state.reclassifiedReason = `Blacklist C2 — ${black.reason}`;
+      simulateSubmit('redirect');
+    };
+    return;
+  }
+
+  const grey = checkGreyZone(val);
+  if (grey) {
+    fb.className = 'feedback-box warn show';
+    fb.innerHTML = `🟡 Detectamos: <strong>${grey.label}</strong>. Essa profissao pode estar dentro ou fora do nosso escopo. Vamos confirmar no proximo passo.`;
+    btn.disabled = false;
+    btn.textContent = 'Continuar →';
+    btn.classList.remove('secondary');
+    btn.onclick = () => {
+      state.perfil = {
+        tag: 'PROFISSIONAL',
+        perfil: 'PROFISSIONAL - ' + val,
+        medico: 'NAO',
+        label: val
+      };
+      document.getElementById('confirmGreyMsg').innerHTML =
+        `Voce digitou <strong>${val}</strong>. Voce atua em clinica de estetica/medicina estetica?`;
+      goToStep('stepConfirmGrey');
+    };
+    return;
+  }
+
+  // Texto livre limpo — aceita mas marca para auditoria
+  fb.className = 'feedback-box accept show';
+  fb.innerHTML = `✅ Profissao "${val}" parece valida. Sera enviada para auditoria humana com tag <code>PROFISSIONAL - Outro (revisar)</code>.`;
+  btn.disabled = false;
+  btn.textContent = 'Continuar →';
+  btn.classList.remove('secondary');
+  btn.onclick = submitCustom;
+}
+
+function submitCustom() {
+  const val = document.getElementById('inputCustomProfession').value.trim();
+  state.perfil = {
+    tag: 'PROFISSIONAL',
+    perfil: 'PROFISSIONAL - Outro (revisar): ' + val,
+    medico: 'NAO',
+    label: val
+  };
+  simulateSubmit('accept');
+}
+
+function checkBlacklist(text) {
+  const norm = text.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  for (const rule of BLACKLIST) {
+    if (rule.match.test(norm)) return rule;
+  }
+  return null;
+}
+
+function checkGreyZone(text) {
+  const norm = text.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  for (const rule of GREY_ZONE) {
+    if (rule.match.test(norm)) return rule;
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIRMACAO CLIENTE FINAL (sai do redirect via "insistir")
+// ═══════════════════════════════════════════════════════════════
+function acceptAsCliente() { simulateSubmit('redirect'); }
+function insistirComoProfissional() {
+  // C3 — Server-side ainda pode bloquear, mas no front damos a chance
+  state.perfil = {
+    ...state.perfil,
+    tag: 'PROFISSIONAL',
+    perfil: state.perfil.perfil + ' (usuario insistiu apos blacklist)'
+  };
+  state.reclassified = false;
+  state.blockedAt = 'C3';
+  simulateSubmit('block');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SIMULA SUBMIT
+// ═══════════════════════════════════════════════════════════════
+function simulateSubmit(outcome) {
+  // outcome: 'accept' | 'redirect' | 'block'
+  state.counters[outcome]++;
+  document.getElementById('statAccept').textContent = state.counters.accept;
+  document.getElementById('statRedirect').textContent = state.counters.redirect;
+  document.getElementById('statBlock').textContent = state.counters.block;
+
+  const payload = buildPayload();
+  const box = document.getElementById('resultBox');
+  const title = document.getElementById('resultTitle');
+
+  if (outcome === 'accept') {
+    box.className = 'feedback-box accept show';
+    box.innerHTML = `
+      ✅ <strong>Lead ACEITO como ${state.perfil.tag}</strong><br>
+      Destino: <code>WhatsApp do SDR comercial</code> + cria deal no RD CRM<br>
+      Perfil final: <code>${state.perfil.perfil}</code>
+    `;
+    title.textContent = 'Lead aceito — segue fluxo normal';
+  } else if (outcome === 'redirect') {
+    box.className = 'feedback-box redirect show';
+    box.innerHTML = `
+      🔄 <strong>Lead RECLASSIFICADO como CLIENTE FINAL</strong><br>
+      Destino: <code>Mensagem de WhatsApp generica</code> ("vamos te ajudar a encontrar profissional parceiro")<br>
+      <strong>NAO</strong> aciona SDR comercial. <strong>NAO</strong> queima tempo do time.<br>
+      ${state.reclassifiedReason ? `<br>Motivo da reclassificacao: <em>${state.reclassifiedReason}</em>` : ''}
+    `;
+    title.textContent = 'Lead redirecionado para cliente final';
+  } else if (outcome === 'block') {
+    box.className = 'feedback-box block show';
+    box.innerHTML = `
+      🚫 <strong>Lead BLOQUEADO pela camada C3 (server-side)</strong><br>
+      O usuario tentou burlar a blacklist apos receber o alerta. O backend (PHP) deveria bloquear o envio ao RD/WhatsApp.<br>
+      Em vez disso, podemos: (a) gravar como lead "auditar manualmente" no RD; (b) gravar em planilha separada de leads suspeitos; (c) bloquear totalmente.
+    `;
+    title.textContent = 'Lead bloqueado server-side';
+  }
+
+  document.getElementById('resultPayload').textContent = JSON.stringify(payload, null, 2);
+  goToStep('stepResult');
+  updateDebug();
+}
+
+function buildPayload() {
+  if (!state.perfil) return {};
+  const dealName = `[${state.perfil.tag}] LEAD TESTE | UNYQUE PRO`;
+  return {
+    deal: {
+      name: dealName,
+      tag_final: state.perfil.tag,
+      reclassified: state.reclassified,
+      reclassified_from: state.reclassifiedFrom,
+      reclassified_reason: state.reclassifiedReason,
+      blocked_at: state.blockedAt,
+      perfil_completo: state.perfil.perfil,
+      contacts: [{ name: 'LEAD TESTE', phones: ['11999999999'], emails: ['teste@teste.com'] }]
+    }
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVEGACAO
+// ═══════════════════════════════════════════════════════════════
+function goToStep(stepId) {
+  ['stepProfile', 'stepWhitelist', 'stepCustom', 'stepConfirmCliente', 'stepConfirmGrey', 'stepResult'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById(stepId).classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetToProfile() {
+  state = { perfil: null, reclassified: false, reclassifiedFrom: null, reclassifiedReason: null, blockedAt: null, counters: state.counters };
+  document.querySelectorAll('#stepProfile .option').forEach(o => o.classList.remove('selected'));
+  document.getElementById('inputCustomProfession').value = '';
+  document.getElementById('blacklistFeedback').classList.remove('show');
+  document.getElementById('btnSubmitCustom').disabled = true;
+  goToStep('stepProfile');
+  updateDebug();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DEBUG PANEL
+// ═══════════════════════════════════════════════════════════════
+function updateDebug() {
+  const lines = [];
+  if (!state.perfil) {
+    lines.push('aguardando interacao...');
+  } else {
+    lines.push(`tag:        ${state.perfil.tag}`);
+    lines.push(`perfil:     ${state.perfil.perfil}`);
+    lines.push(`medico:     ${state.perfil.medico}`);
+    lines.push(`label:      ${state.perfil.label}`);
+    if (state.reclassified) {
+      lines.push('');
+      lines.push(`reclass.:   ${state.reclassifiedFrom} → ${state.perfil.tag}`);
+      lines.push(`motivo:     ${state.reclassifiedReason}`);
+    }
+    if (state.blockedAt) {
+      lines.push('');
+      lines.push(`blocked at: ${state.blockedAt}`);
+    }
+  }
+  document.getElementById('debugState').textContent = lines.join('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CASOS DE TESTE PRE-PRONTOS
+// ═══════════════════════════════════════════════════════════════
+function runTestCase(caseId) {
+  resetToProfile();
+  // Sempre comeca clicando em "Outro profissional"
+  const outroOpt = document.querySelector('#stepProfile .option[data-other="1"]');
+  outroOpt.click();
+
+  setTimeout(() => {
+    // Vai pro step custom para testar a blacklist (esse e o pior caso)
+    goToStep('stepCustom');
+    const input = document.getElementById('inputCustomProfession');
+
+    const cases = {
+      cozinheira:        'cozinheira',
+      pedagoga:          'pedagoga',
+      professora:        'professora',
+      tecnica_enfermagem:'tecnica de enfermagem',
+      assistente_social: 'assistente social',
+      nutricionista:     'nutricionista',
+      enfermeira_esteta: 'enfermeira esteta',
+      farmaceutica:      'farmaceutica esteta',
+      bypass:            'doutora cozinha estetica'
+    };
+
+    input.value = cases[caseId] || '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Auto-clica em Continuar apos 1.2s pra ele ver o feedback antes
+    setTimeout(() => {
+      const btn = document.getElementById('btnSubmitCustom');
+      if (!btn.disabled) btn.click();
+    }, 1200);
+  }, 350);
+}
+</script>
+
+</body>
+</html>

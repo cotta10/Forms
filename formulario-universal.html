@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Formulário de Contato</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1117;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 0;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: contain;
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.05);
+      padding: 8px;
+    }
+
+    .brand-name {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .brand-tagline {
+      font-size: 13px;
+      color: #8a8f98;
+      line-height: 1.4;
+    }
+
+    /* ── Progress Bar ── */
+    .progress-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+
+    .progress-step {
+      flex: 1;
+      height: 3px;
+      background: #2a2d35;
+      border-radius: 2px;
+      transition: background 0.4s ease;
+    }
+
+    .progress-step.active {
+      background: #00b4d8;
+    }
+
+    .progress-step.done {
+      background: #00b4d8;
+    }
+
+    /* ── Steps ── */
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .step-subtitle {
+      font-size: 13px;
+      color: #8a8f98;
+      margin-bottom: 20px;
+    }
+
+    /* ── Group Labels ── */
+    .group-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #5a5f6a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      padding-left: 4px;
+    }
+
+    .group-label:first-of-type {
+      margin-top: 0;
+    }
+
+    /* ── Radio Options ── */
+    .option-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #1a1d25;
+      border: 1.5px solid #2a2d35;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .option:hover {
+      border-color: #3a3d45;
+      background: #1e2128;
+    }
+
+    .option.selected {
+      border-color: #00b4d8;
+      background: rgba(0, 180, 216, 0.08);
+    }
+
+    .option-label {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #3a3d45;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .option.selected .option-radio {
+      border-color: #00b4d8;
+      background: #00b4d8;
+    }
+
+    .option.selected .option-radio::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    /* ── Form Inputs ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c0c4cc;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-label .optional {
+      color: #5a5f6a;
+      font-weight: 400;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #1a1d25;
+      border: 1.5px solid #2a2d35;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: #00b4d8;
+    }
+
+    .form-input::placeholder {
+      color: #4a4f58;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+
+    .btn-primary {
+      background: #00b4d8;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #00a0c0;
+    }
+
+    .btn-primary:disabled {
+      background: #1a3a42;
+      color: #4a6a72;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: #8a8f98;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+
+    .btn-back:hover {
+      color: #fff;
+    }
+
+    /* ── Success Screen ── */
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(0, 180, 216, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+
+    .success-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .success-text {
+      font-size: 14px;
+      color: #8a8f98;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-whatsapp:hover {
+      background: #20bd5a;
+    }
+
+    /* ── Loading ── */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #2a2d35;
+      border-top-color: #00b4d8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: #8a8f98;
+    }
+
+    /* ── Error ── */
+    .error-msg {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    /* ── Specialty Sub-step ── */
+    #specialtySection {
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Separator ── */
+    .separator {
+      height: 1px;
+      background: #2a2d35;
+      margin: 12px 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      margin-top: 24px;
+      border-top: 1px solid #2a2d35;
+    }
+
+    .footer-logo {
+      height: 24px;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .footer-logo:hover {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img class="logo" id="brandLogo" src="" alt="Logo">
+    <div class="brand-name" id="brandName"></div>
+    <div class="brand-tagline" id="brandTagline"></div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+    <div class="progress-step active" id="prog1"></div>
+    <div class="progress-step" id="prog2"></div>
+    <div class="progress-step" id="prog3"></div>
+  </div>
+
+  <!-- ═══════════ STEP 1: Perfil ═══════════ -->
+  <div class="step active" id="step1">
+    <div class="step-title">Qual seu perfil?</div>
+    <div class="step-subtitle">Selecione a opção que melhor descreve você</div>
+
+    <div class="group-label">Profissionais</div>
+    <div class="option-list" id="profilesProfissionais"></div>
+
+    <!-- Sub-step: Especialidade médica (aparece só quando clica em Médico) -->
+    <div id="specialtySection" style="display:none; margin-top:16px;">
+      <div class="group-label">Qual sua especialidade?</div>
+      <div class="option-list" id="specialtyOptions"></div>
+      <div id="customSpecialtyField" class="form-group" style="display:none; margin-top:12px;">
+        <input class="form-input" type="text" id="inputCustomSpecialty" placeholder="Digite sua especialidade">
+      </div>
+    </div>
+
+    <div class="group-label">Negócios</div>
+    <div class="option-list" id="profilesNegocios"></div>
+
+    <div class="separator"></div>
+    <div class="option-list" id="profilesCliente"></div>
+
+    <button class="btn btn-primary" id="btnStep1" disabled onclick="goToStep(2)">Continuar</button>
+  </div>
+
+  <!-- ═══════════ STEP 2: Dados de Contato ═══════════ -->
+  <div class="step" id="step2">
+    <div class="step-title">Seus dados de contato</div>
+    <div class="step-subtitle">Para que possamos entrar em contato</div>
+
+    <div class="form-group">
+      <label class="form-label">Nome completo</label>
+      <input class="form-input" type="text" id="inputNome" placeholder="Seu nome" autocomplete="name">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Telefone / WhatsApp</label>
+      <input class="form-input" type="tel" id="inputTelefone" placeholder="(11) 99999-9999" autocomplete="tel">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" id="inputEmail" placeholder="seu@email.com" autocomplete="email">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Instagram <span class="optional">(opcional)</span></label>
+      <input class="form-input" type="text" id="inputInstagram" placeholder="@seuperfil">
+    </div>
+
+    <button class="btn btn-primary" id="btnStep2" disabled onclick="goToStep(3)">Continuar</button>
+    <button class="btn btn-back" onclick="goToStep(1)">&#8592; Voltar</button>
+  </div>
+
+  <!-- ═══════════ STEP 3: Como Conheceu ═══════════ -->
+  <div class="step" id="step3">
+    <div class="step-title">Como conheceu a marca?</div>
+    <div class="step-subtitle">Nos ajuda a melhorar nossos canais</div>
+
+    <div class="option-list" id="sourceOptions"></div>
+
+    <button class="btn btn-primary" id="btnSubmit" disabled onclick="submitForm()">Enviar</button>
+    <button class="btn btn-back" onclick="goToStep(2)">&#8592; Voltar</button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- ═══════════ Loading ═══════════ -->
+  <div class="loading" id="loadingScreen">
+    <div class="spinner"></div>
+    <div class="loading-text">Enviando seus dados...</div>
+  </div>
+
+  <!-- ═══════════ Sucesso ═══════════ -->
+  <div class="step" id="stepSuccess">
+    <div class="success-icon">&#10003;</div>
+    <div class="success-title" id="successTitle">Recebemos seus dados!</div>
+    <div class="success-text" id="successText">Nossa equipe entrará em contato em breve.</div>
+    <a id="btnWhatsapp" href="#" class="btn btn-whatsapp" style="text-decoration:none; display:none;">
+      &#128172; Falar no WhatsApp
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <img class="footer-logo" src="Logos/Logotipo fundo Contourline Branca.png" alt="Contourline">
+  </div>
+
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  CONFIGURAÇÃO DAS MARCAS                                ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const BRANDS = {
+  contourline: {
+    name: "Contourline",
+    tagline: "Tecnologia em Estética Corporal e Facial",
+    logo: "Logos/LOGO PERFIL CONTOURLINE.png",
+    whatsapp: "5511999999999", // SUBSTITUIR
+    profissionais: [
+      { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+      { label: "Biomédico(a) Esteta", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Biomédico Esteta" },
+      { label: "Esteticista", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Esteticista" },
+      { label: "Fisioterapeuta Dermatofuncional", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Tecnólogo(a) em Estética", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Tecnólogo em Estética" },
+      { label: "Dono(a) de Clínica / Spa", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE CLÍNICA" },
+      { label: "Outro profissional", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Outro" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plástica", perfil: "MÉDICO - Cirurgião Plástico" },
+      { label: "Dermatologia", perfil: "MÉDICO - Dermatologista" },
+      { label: "Medicina Estética", perfil: "MÉDICO - Médico Estético" },
+      { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  contourline_med: {
+    name: "Contourline Med",
+    tagline: "Tecnologia Médica de Alta Performance",
+    logo: "Logos/contourline med - perfil.png",
+    whatsapp: "5511999999999",
+    profissionais: [
+      { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+      { label: "Dono(a) de Clínica", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE CLÍNICA" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plástica", perfil: "MÉDICO - Cirurgião Plástico" },
+      { label: "Dermatologia", perfil: "MÉDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MÉDICO - Ginecologista" },
+      { label: "Medicina Estética", perfil: "MÉDICO - Médico Estético" },
+      { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  lumenis: {
+    name: "Lumenis",
+    tagline: "Líder Mundial em Tecnologias Médicas de Energia",
+    logo: "Logos/Lumenis_RGB_Logo_White-fundo.png",
+    whatsapp: "5511999999999",
+    profissionais: [
+      { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+      { label: "Dono(a) de Clínica", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE CLÍNICA" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plástica", perfil: "MÉDICO - Cirurgião Plástico" },
+      { label: "Dermatologia", perfil: "MÉDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MÉDICO - Ginecologista" },
+      { label: "Medicina Estética", perfil: "MÉDICO - Médico Estético" },
+      { label: "Oftalmologia", perfil: "MÉDICO - Oftalmologista" },
+      { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  bodyhealth: {
+    name: "Body Health",
+    tagline: "Tecnologia e Inovação em Saúde e Estética",
+    logo: "Logos/PERFIL_BODY HEALTH.png",
+    whatsapp: "5511999999999",
+    profissionais: [
+      { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+      { label: "Biomédico(a) / Esteticista", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Esteticista" },
+      { label: "Fisioterapeuta", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Dono(a) de Clínica / Spa", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE CLÍNICA" },
+      { label: "Outro profissional", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Outro" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plástica", perfil: "MÉDICO - Cirurgião Plástico" },
+      { label: "Dermatologia", perfil: "MÉDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MÉDICO - Ginecologista" },
+      { label: "Medicina Estética", perfil: "MÉDICO - Médico Estético" },
+      { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  visbody: {
+    name: "Visbody Brasil",
+    tagline: "Scanner Corporal 3D com IA — Diagnóstico em 10 segundos",
+    logo: "Logos/VISBODY BRANCA - perfil.png",
+    whatsapp: "5511999999999",
+    profissionais: [
+      { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+      { label: "Fisioterapeuta / Biomédico(a)", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Nutricionista", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Nutricionista" },
+      { label: "Personal Trainer / Educador Físico", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Personal Trainer" },
+      { label: "Dono de Academia / Spa", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE ACADEMIA" },
+      { label: "Outro profissional", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Outro" }
+    ],
+    especialidades: [
+      { label: "Medicina Esportiva", perfil: "MÉDICO - Medicina Esportiva" },
+      { label: "Endocrinologia", perfil: "MÉDICO - Endocrinologista" },
+      { label: "Nutrologia", perfil: "MÉDICO - Nutrólogo" },
+      { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer uma avaliação", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer avaliação" }
+    ]
+  }
+};
+
+// Fallback genérico quando UTM não identifica a marca
+const FALLBACK_BRAND = {
+  name: "Contourline Group",
+  tagline: "Tecnologia em Saúde e Estética",
+  logo: "Logos/LOGO PERFIL CONTOURLINE.png",
+  whatsapp: "5511999999999",
+  profissionais: [
+    { label: "Médico(a)", tag: "MÉDICO", medico: "SIM", perfil: "MÉDICO", hasSub: true },
+    { label: "Biomédico(a) Esteta", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Biomédico Esteta" },
+    { label: "Esteticista", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Esteticista" },
+    { label: "Fisioterapeuta", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+    { label: "Nutricionista", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Nutricionista" },
+    { label: "Personal Trainer", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Personal Trainer" },
+    { label: "Dono(a) de Clínica / Spa / Academia", tag: "EMPRESÁRIO", medico: "NÃO", perfil: "EMPRESÁRIO / DONO DE CLÍNICA" },
+    { label: "Outro profissional", tag: "PROFISSIONAL", medico: "NÃO", perfil: "PROFISSIONAL - Outro" }
+  ],
+  especialidades: [
+    { label: "Cirurgia Plástica", perfil: "MÉDICO - Cirurgião Plástico" },
+    { label: "Dermatologia", perfil: "MÉDICO - Dermatologista" },
+    { label: "Ginecologia", perfil: "MÉDICO - Ginecologista" },
+    { label: "Medicina Estética", perfil: "MÉDICO - Médico Estético" },
+    { label: "Outra especialidade", perfil: "MÉDICO - Outro" }
+  ],
+  negocios: [
+    { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" },
+    { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NÃO", perfil: "INVESTIDOR / LOCADORA" }
+  ],
+  cliente: [
+    { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NÃO", perfil: "CLIENTE FINAL - Quer tratamento" }
+  ]
+};
+
+// Opções de "Como conheceu"
+const SOURCE_OPTIONS = [
+  { label: "Já vi uma demonstração", value: "Já vi uma demonstração", demo: true },
+  { label: "Vi nas redes sociais", value: "Vi nas redes sociais", demo: false },
+  { label: "Indicação de colega", value: "Indicação de colega", demo: false },
+  { label: "Congresso / Evento", value: "Congresso / Evento", demo: false },
+  { label: "Primeira vez que vejo", value: "Primeira vez que vejo", demo: false }
+];
+
+// Mapeamento de UTM source para deal_source_id do RD Station
+const SOURCE_MAP = {
+  facebook:  "6942e989612fc60001add9cc",
+  fb:        "6942e989612fc60001add9cc",
+  instagram: "693b662b09b5cf00017b9f60",
+  ig:        "693b662b09b5cf00017b9f60",
+  google:    "691e674c26a19d00017f490d"
+};
+const DEFAULT_SOURCE = "68767b92ac9e99000130e3eb"; // Desconhecido
+
+// Mapeamento de UTM term → valor EXATO do campo EQUIPAMENTO no RD Station
+const EQUIP_MAP = {
+  // Lumenis
+  "stellar":           "STELLAR",
+  "stellar_m22":       "STELLAR",
+  "stellarm22":        "STELLAR",
+  "trilift":           "TRILIFT",
+  "ultrapulse":        "ULTRAPULSE ALPHA",
+  "ultrapulse_alpha":  "ULTRAPULSE ALPHA",
+  "nuera":             "NUERA TIGHT 2.0",
+  "nuera_tight":       "NUERA TIGHT 2.0",
+  "nueratight":        "NUERA TIGHT 2.0",
+  "splendor":          "SPLENDOR X 2.0",
+  "splendor_x":        "SPLENDOR X 2.0",
+  "folix":             "FOLIX",
+  // Contourline
+  "hipro":             "HIPRO",
+  "multishape":        "MULTISHAPE",
+  "xtonus":            "X-TONUS MAN INDIVIDUAIS",
+  "x_tonus":           "X-TONUS MAN INDIVIDUAIS",
+  "focuskin":          "FOCUSKIN",
+  "hivepro":           "HIVE PRO",
+  "hive_pro":          "HIVE PRO",
+  "ultralift":         "ULTRALIFT",
+  "reverso":           "REVERSO",
+  // Contourline Med
+  "hipro_med":         "HIPRO MED",
+  "hipromed":          "HIPRO MED",
+  "supreme_pro":       "SUPREME PRO",
+  "supremepro":        "SUPREME PRO",
+  // Body Health
+  "crystal":           "LASER CRYSTAL 3D PLUS",
+  "crystal_3d":        "LASER CRYSTAL 3D PLUS",
+  "enygma":            "ENYGMA",
+  "unyque":            "UNYQUE PRO",
+  "unyque_pro":        "UNYQUE PRO",
+  "iconyc":            "ICONYC",
+  // Visbody
+  "s30":               "S30",
+  "s_30":              "S30",
+  "m30":               "M30",
+  "m_30":              "M30",
+  "creator600":        "CREATOR 600",
+  "creator_600":       "CREATOR 600"
+};
+
+// IDs do RD Station CRM (token fica no proxy PHP, não no frontend)
+const RD = {
+  proxyUrl: "api-rdstation.php", // URL do proxy PHP no WordPress
+  pipeline_sdr: "699634f0cb5aa400132abc7d",
+  stage_sondagem: "699634f0cb5aa400132abc7f",
+  fields: {
+    equipamento:    "6877f290dbb82500208494a5",
+    perfil_medico:  "689a366af6831c00144f44bb",
+    fonte_sdr:      "69a6da473bfb3600166be34d",
+    instagram:      "685e9c2e14135100147f1d45",
+    perfil_cliente: "685e9dfae59a490018bf4398",
+    houve_demo:     "699ca12019a7eb001376c7a7"
+  }
+};
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ESTADO DO FORMULÁRIO                                   ║
+// ╚══════════════════════════════════════════════════════════╝
+
+let currentStep = 1;
+let selectedProfile = null;
+let selectedSpecialty = null;
+let selectedSource = null;
+let activeBrand = null;
+
+// UTM params
+const params = new URLSearchParams(window.location.search);
+const utm = {
+  brand:    (params.get('utm_brand') || '').toLowerCase().replace(/[\s-]/g, '_'),
+  source:   (params.get('utm_source') || '').toLowerCase(),
+  medium:   (params.get('utm_medium') || '').toLowerCase(),
+  campaign: params.get('utm_campaign') || '',
+  term:     params.get('utm_term') || '',
+  content:  params.get('utm_content') || ''
+};
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  INICIALIZAÇÃO                                          ║
+// ╚══════════════════════════════════════════════════════════╝
+
+function init() {
+  // Detectar marca pela UTM
+  activeBrand = BRANDS[utm.brand] || FALLBACK_BRAND;
+
+  // Header
+  document.getElementById('brandLogo').src = activeBrand.logo;
+  document.getElementById('brandLogo').alt = activeBrand.name;
+  document.getElementById('brandName').textContent = activeBrand.name;
+  document.getElementById('brandTagline').textContent = activeBrand.tagline;
+
+  // Título da página
+  document.title = activeBrand.name + ' — Formulário de Contato';
+
+  // Renderizar perfis
+  renderOptions('profilesProfissionais', activeBrand.profissionais, 'profile');
+  renderOptions('profilesNegocios', activeBrand.negocios, 'profile');
+  renderOptions('profilesCliente', activeBrand.cliente, 'profile');
+
+  // Renderizar especialidades médicas (ordem alfabética, já vem ordenado)
+  if (activeBrand.especialidades) {
+    renderOptions('specialtyOptions', activeBrand.especialidades, 'specialty');
+  }
+
+  // Renderizar fontes (step 3)
+  renderSourceOptions();
+
+  // Validação dos inputs do step 2
+  ['inputNome', 'inputTelefone', 'inputEmail'].forEach(id => {
+    document.getElementById(id).addEventListener('input', validateStep2);
+  });
+
+  // Máscara de telefone
+  document.getElementById('inputTelefone').addEventListener('input', maskPhone);
+}
+
+function renderOptions(containerId, options, group) {
+  const container = document.getElementById(containerId);
+  options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = group;
+    div.dataset.index = i;
+    div.innerHTML = `
+      <span class="option-label">${opt.label}</span>
+      <span class="option-radio"></span>
+    `;
+    div.addEventListener('click', () => selectOption(div, group, opt));
+    container.appendChild(div);
+  });
+}
+
+function renderSourceOptions() {
+  const container = document.getElementById('sourceOptions');
+  SOURCE_OPTIONS.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = 'source';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <span class="option-label">${opt.label}</span>
+      <span class="option-radio"></span>
+    `;
+    div.addEventListener('click', () => selectOption(div, 'source', opt));
+    container.appendChild(div);
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  INTERAÇÕES                                             ║
+// ╚══════════════════════════════════════════════════════════╝
+
+function selectOption(element, group, data) {
+  // Desmarcar todos do mesmo grupo
+  document.querySelectorAll(`.option[data-group="${group}"]`).forEach(el => {
+    el.classList.remove('selected');
+  });
+
+  // Marcar selecionado
+  element.classList.add('selected');
+
+  if (group === 'profile') {
+    selectedProfile = data;
+    selectedSpecialty = null; // Reset especialidade
+
+    // Se clicou em "Médico(a)" (tem sub-opções), mostrar especialidades
+    const specSection = document.getElementById('specialtySection');
+    if (data.hasSub && activeBrand.especialidades) {
+      specSection.style.display = 'block';
+      // Desmarcar especialidades anteriores
+      document.querySelectorAll('.option[data-group="specialty"]').forEach(el => {
+        el.classList.remove('selected');
+      });
+      // Botão desabilitado até escolher especialidade
+      document.getElementById('btnStep1').disabled = true;
+      // Scroll suave até as especialidades
+      setTimeout(() => specSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    } else {
+      specSection.style.display = 'none';
+      document.getElementById('btnStep1').disabled = false;
+    }
+  } else if (group === 'specialty') {
+    selectedSpecialty = data;
+    const customField = document.getElementById('customSpecialtyField');
+    const customInput = document.getElementById('inputCustomSpecialty');
+
+    if (data.perfil.includes('Outro')) {
+      // Mostrar campo de texto para especialidade customizada
+      customField.style.display = 'block';
+      customInput.focus();
+      // Botão só habilita quando digitar algo
+      document.getElementById('btnStep1').disabled = customInput.value.trim().length < 2;
+      customInput.oninput = () => {
+        const val = customInput.value.trim();
+        document.getElementById('btnStep1').disabled = val.length < 2;
+        if (val.length >= 2) {
+          selectedProfile = { ...selectedProfile, perfil: 'MÉDICO - ' + val };
+        }
+      };
+    } else {
+      customField.style.display = 'none';
+      customInput.value = '';
+      // Atualizar o perfil com a especialidade escolhida
+      selectedProfile = { ...selectedProfile, perfil: data.perfil };
+      document.getElementById('btnStep1').disabled = false;
+    }
+  } else if (group === 'source') {
+    selectedSource = data;
+    document.getElementById('btnSubmit').disabled = false;
+  }
+}
+
+function goToStep(step) {
+  // Esconder step atual
+  document.getElementById('step' + currentStep).classList.remove('active');
+
+  // Mostrar novo step
+  currentStep = step;
+  document.getElementById('step' + currentStep).classList.add('active');
+
+  // Atualizar progress bar
+  for (let i = 1; i <= 3; i++) {
+    const prog = document.getElementById('prog' + i);
+    prog.classList.remove('active', 'done');
+    if (i < currentStep) prog.classList.add('done');
+    if (i === currentStep) prog.classList.add('active');
+  }
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep2() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const tel = document.getElementById('inputTelefone').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+
+  const valid = nome.length >= 2 && tel.length >= 10 && email.includes('@') && email.includes('.');
+  document.getElementById('btnStep2').disabled = !valid;
+}
+
+function maskPhone(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0, 11);
+  if (v.length > 6) {
+    v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  } else if (v.length > 2) {
+    v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+  }
+  e.target.value = v;
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ENVIO PARA RD STATION                                  ║
+// ╚══════════════════════════════════════════════════════════╝
+
+async function submitForm() {
+  const nome = document.getElementById('inputNome').value.trim().toUpperCase();
+  const telefone = document.getElementById('inputTelefone').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+  const instagram = document.getElementById('inputInstagram').value.trim();
+
+  // ── CLIENTE FINAL: não vai pro CRM, redireciona direto pro WhatsApp ──
+  if (selectedProfile.tag === 'CLIENTE FINAL') {
+    const equip = utm.term || 'equipamento';
+    const msg = encodeURIComponent(
+      `Olá! Sou ${nome} e tenho interesse em fazer um tratamento com ${equip}. Podem me indicar um profissional na minha região?`
+    );
+    // Mostrar tela de sucesso com botão WhatsApp
+    document.getElementById('step3').classList.remove('active');
+    for (let i = 1; i <= 3; i++) document.getElementById('prog' + i).classList.add('done');
+    document.getElementById('successTitle').textContent = 'Obrigado pelo seu interesse!';
+    document.getElementById('successText').textContent =
+      'Vamos te ajudar a encontrar um profissional parceiro na sua região. Clique abaixo para falar conosco.';
+    const btnWpp = document.getElementById('btnWhatsapp');
+    btnWpp.href = `https://wa.me/${activeBrand.whatsapp}?text=${msg}`;
+    btnWpp.style.display = 'flex';
+    document.getElementById('stepSuccess').classList.add('active');
+    return; // NÃO envia pro CRM
+  }
+
+  // ── DEMAIS PERFIS: enviam pro CRM normalmente ──
+
+  // Mapear UTM term para valor exato do campo EQUIPAMENTO no RD Station
+  const utmTermKey = (utm.term || '').toLowerCase().replace(/[\s-]/g, '_');
+  const equipamento = EQUIP_MAP[utmTermKey] || utm.term.toUpperCase() || 'NAO INFORMADO';
+
+  // Montar nome da negociação: [TAG] NOME | EQUIPAMENTO
+  const dealName = `[${selectedProfile.tag}] ${nome} | ${equipamento}`;
+
+  // Deal source baseado na UTM
+  const dealSourceId = SOURCE_MAP[utm.source] || DEFAULT_SOURCE;
+
+  // Houve demonstração?
+  const houveDemo = selectedSource.demo ? 'SIM' : 'N\u00C3O';
+
+  // Descrição com "como conheceu" (Step 3) + UTMs para rastreabilidade
+  const descricao = [
+    `Como conheceu: ${selectedSource.value}`,
+    `Perfil: ${selectedProfile.perfil}`,
+    utm.campaign ? `Campanha: ${utm.campaign}` : '',
+    utm.source ? `Fonte: ${utm.source} / ${utm.medium}` : '',
+    utm.content ? `Conteudo: ${utm.content}` : ''
+  ].filter(Boolean).join(' | ');
+
+  // Payload do RD Station
+  const payload = {
+    deal: {
+      name: dealName,
+      deal_stage_id: RD.stage_sondagem,
+      deal_pipeline_id: RD.pipeline_sdr,
+      deal_source_id: dealSourceId,
+      description: descricao,
+      deal_custom_fields: [
+        { custom_field_id: RD.fields.equipamento, value: equipamento },
+        { custom_field_id: RD.fields.perfil_medico, value: selectedProfile.medico },
+        { custom_field_id: RD.fields.fonte_sdr, value: ["Inbound"] },
+        { custom_field_id: RD.fields.perfil_cliente, value: selectedProfile.perfil },
+        { custom_field_id: RD.fields.houve_demo, value: houveDemo }
+      ],
+      contacts: [{
+        name: nome,
+        phones: [{ phone: telefone.replace(/\D/g, '') }],
+        emails: [{ email: email }]
+      }]
+    }
+  };
+
+  // Adicionar Instagram se preenchido
+  if (instagram) {
+    payload.deal.deal_custom_fields.push({
+      custom_field_id: RD.fields.instagram,
+      value: instagram
+    });
+  }
+
+  // Mostrar loading
+  document.getElementById('step3').classList.remove('active');
+  document.getElementById('loadingScreen').classList.add('active');
+  document.getElementById('errorMsg').classList.remove('visible');
+
+  try {
+    const response = await fetch(RD.proxyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.errors ? JSON.stringify(errData.errors) : `Erro ${response.status}`);
+    }
+
+    // Sucesso
+    document.getElementById('loadingScreen').classList.remove('active');
+    showSuccess();
+
+  } catch (err) {
+    console.error('Erro ao enviar:', err);
+    document.getElementById('loadingScreen').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+
+    const errorEl = document.getElementById('errorMsg');
+    errorEl.textContent = 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.';
+    errorEl.classList.add('visible');
+  }
+}
+
+function showSuccess() {
+  document.getElementById('stepSuccess').classList.add('active');
+
+  // Progress bar completa
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('prog' + i).classList.add('done');
+  }
+
+  // Cliente final nunca chega aqui (é redirecionado antes de enviar ao CRM)
+  // Tela de sucesso para profissionais/empresários/investidores
+  document.getElementById('successTitle').textContent = 'Recebemos seus dados!';
+  document.getElementById('successText').textContent =
+    'Nossa equipe comercial entrará em contato em breve. Fique atento ao seu WhatsApp e e-mail.';
+}
+
+// Iniciar
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

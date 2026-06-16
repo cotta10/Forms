@@ -1,0 +1,31 @@
+# ═══════════════════════════════════════════════════════════════
+# .gitignore — formularios_output (repo cotta10/Forms)
+# ═══════════════════════════════════════════════════════════════
+
+# ── Credenciais / segredos (NUNCA versionar) ──
+.env
+.env.*
+!.env.example
+# api-rdstation.php contém RD_TOKEN hardcoded
+api-rdstation.php
+# MAPEAMENTO_CRM_API.md contém token RD em exemplo de curl
+MAPEAMENTO_CRM_API.md
+
+# ── Config local de ferramentas ──
+.vercel/
+.vercel
+.claude/
+
+# ── Relatórios / planilhas internas ──
+*.xlsx
+
+# ── Dados pessoais de leads (LGPD) ──
+*.jpeg
+*.jpg
+
+# ── Dados internos / scraping (não usados pelos forms) ──
+parceiros.json
+hipro_estetica_posts.json
+hipromed_candidates.json
+unyque_posts.json
+unyque_posts_nossos.json

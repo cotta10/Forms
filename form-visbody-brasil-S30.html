@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visbody Brasil — Formulário de Qualificação</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<!-- Meta Pixel Contourline -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '580445538791855');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=580445538791855&ev=PageView&noscript=1"/></noscript>
+<style>
+  :root {
+    --bg-primary: #0a0f1a;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.18);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent: #06b6d4;
+    --accent-hover: #0891b2;
+    --accent-glow: rgba(6,182,212,0.25);
+    --success: #10b981;
+    --whatsapp: #25d366;
+    --whatsapp-hover: #1ebe57;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(6,182,212,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.04) 0%, transparent 50%);
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 440px;
+    min-height: 580px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-header { text-align: center; margin-bottom: 32px; }
+
+  .logo-circle {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: #06b6d4;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    overflow: hidden;
+    padding: 8px;
+  }
+
+  .logo-circle img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 8px;
+  }
+
+  .brand-tagline {
+    font-size: 14px; color: var(--text-secondary);
+    line-height: 1.5; max-width: 340px; margin: 0 auto;
+  }
+
+  .equipment-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    background: var(--accent-glow); border: 1px solid var(--accent);
+    color: var(--accent); font-size: 12px; font-weight: 600;
+    margin-top: 12px; letter-spacing: 0.3px;
+  }
+  .equipment-badge::before { content: '◆'; font-size: 8px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-segment {
+    flex: 1; height: 3px; border-radius: 3px;
+    background: var(--border); transition: background 0.4s ease;
+  }
+  .progress-segment.active { background: var(--accent); }
+  .progress-segment.done { background: var(--success); }
+
+  .step { display: none; animation: fadeSlideIn 0.35s ease; }
+  .step.active { display: block; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; }
+  .step-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+
+  .option-card {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease;
+    background: transparent; user-select: none;
+  }
+  .option-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.02); }
+  .option-card:active { transform: scale(0.98); opacity: 0.9; }
+  .option-card.selected {
+    border-color: var(--accent); background: rgba(255,255,255,0.04);
+    box-shadow: 0 0 0 1px var(--accent), 0 2px 12px var(--accent-glow);
+  }
+  .option-card .label { font-size: 15px; font-weight: 500; }
+  .option-card .radio {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s ease;
+  }
+  .option-card.selected .radio { border-color: var(--accent); background: var(--accent); }
+  .option-card.selected .radio::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; background: white;
+  }
+
+  .options-scroll { max-height: 380px; overflow-y: auto; padding-right: 4px; }
+  .options-scroll::-webkit-scrollbar { width: 4px; }
+  .options-scroll::-webkit-scrollbar-track { background: transparent; }
+  .options-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+  .btn-back {
+    background: none; border: none; color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
+    padding: 12px; display: flex; align-items: center; gap: 6px;
+    margin: 0 auto; transition: color 0.2s;
+  }
+  .btn-back:hover { color: var(--text-primary); }
+
+  .privacy-note {
+    font-size: 11px; color: var(--text-secondary); text-align: center;
+    margin-top: 16px; line-height: 1.5; opacity: 0.85;
+  }
+  .privacy-note a { color: var(--accent); text-decoration: none; }
+
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(37,211,102,0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin: 20px auto 24px; animation: scaleIn 0.4s ease;
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .success-icon svg { width: 32px; height: 32px; fill: var(--whatsapp); }
+  .success-title {
+    font-family: 'Playfair Display', serif; font-size: 22px;
+    text-align: center; margin-bottom: 12px;
+  }
+  .success-text {
+    font-size: 14px; color: var(--text-secondary); text-align: center;
+    line-height: 1.6; max-width: 320px; margin: 0 auto 20px;
+  }
+  .btn-open-whatsapp {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 280px; margin: 0 auto; padding: 14px 24px; border: none;
+    border-radius: 14px; background: var(--whatsapp); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+  }
+  .btn-open-whatsapp:hover { background: var(--whatsapp-hover); transform: translateY(-1px); }
+  .btn-open-whatsapp svg { width: 18px; height: 18px; fill: white; }
+
+  .rmkt-cta-preview {
+    margin-top: 16px; padding: 14px 16px;
+    background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
+    border-radius: 10px; font-size: 13px; color: var(--text-secondary);
+    line-height: 1.5; display: none;
+  }
+  .rmkt-cta-preview.visible { display: block; animation: fadeSlideIn 0.3s ease; }
+  .rmkt-cta-label { font-size: 11px; color: var(--whatsapp); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .btn-whatsapp-rmkt {
+    width: 100%; padding: 16px; border: none; border-radius: 14px;
+    background: var(--whatsapp); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease; margin-top: 16px;
+    display: none; align-items: center; justify-content: center; gap: 10px;
+    text-decoration: none;
+  }
+  .btn-whatsapp-rmkt.visible { display: flex; animation: fadeSlideIn 0.3s ease, pulse 2s ease-in-out 0.8s 2; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+  }
+  .btn-whatsapp-rmkt:hover {
+    background: var(--whatsapp-hover); transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  }
+  .btn-whatsapp-rmkt svg { width: 20px; height: 20px; fill: white; }
+
+  .search-input {
+    width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+    border-radius: 12px; background: rgba(255,255,255,0.04);
+    color: var(--text-primary); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; margin-bottom: 12px; outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .search-input::placeholder { color: var(--text-secondary); opacity: 0.6; }
+  .search-input:focus { border-color: var(--accent); }
+
+  .option-card.hidden { display: none; }
+
+  /* Inputs do Step 4 (Dados do lead) */
+  .form-field { margin-bottom: 14px; }
+  .form-label {
+    display: block; font-size: 12px; color: var(--text-secondary);
+    margin-bottom: 6px; font-weight: 500;
+  }
+  .form-label-opt { opacity: 0.6; font-weight: 400; }
+  .form-input {
+    width: 100%; padding: 13px 16px; border: 1px solid var(--border);
+    border-radius: 12px; background: rgba(255,255,255,0.04);
+    color: var(--text-primary); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .form-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input.valid { border-color: var(--success); }
+  .form-input.invalid { border-color: #ef4444; }
+  .btn-primary {
+    width: 100%; padding: 16px; border: none; border-radius: 14px;
+    background: var(--accent); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease; margin-top: 8px;
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-whatsapp-rmkt.loading {
+    opacity: 0.7; pointer-events: none;
+  }
+  .btn-whatsapp-rmkt.loading svg { animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .selections-summary {
+    padding: 12px 16px; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    margin-bottom: 16px; font-size: 13px; color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .selections-summary strong { color: var(--text-primary); font-weight: 600; }
+
+  .logo-fallback {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: white;
+    letter-spacing: 1px;
+  }
+
+  .greeting-bar {
+    padding: 14px 18px; border-radius: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    margin-bottom: 20px; font-size: 14px; color: var(--text-primary);
+    line-height: 1.6; text-align: center;
+  }
+  .greeting-bar strong { color: var(--accent); }
+
+  .form-footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .form-footer img {
+    max-width: 180px;
+    height: auto;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+
+  .form-footer img:hover { opacity: 1; }
+
+  .form-footer .footer-text {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 480px) {
+    .form-container { min-height: auto; }
+    .step-title { font-size: 16px; }
+    .form-footer img { max-width: 140px; }
+  }
+</style>
+</head>
+<body>
+<div class="form-container">
+  <div class="form-header">
+    <div class="logo-circle" id="logoCircle">
+      <img src="Logos/VISBODY BRANCA - perfil.png" alt="Visbody Brasil" onerror="this.parentElement.outerHTML='<div class=\'logo-fallback\'>V</div>'">
+    </div>
+    <div class="brand-name">Visbody Brasil</div>
+    <div class="brand-tagline" id="tagline">Scanner corporal 3D com Inteligência Artificial - Diagnóstico em 10 segundos</div>
+    <div class="equipment-badge" id="equipBadge" style="display:none;"></div>
+  </div>
+  <div class="greeting-bar" id="greetingBar"></div>
+
+  <div class="progress-bar">
+    <div class="progress-segment active"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+  </div>
+
+  <!-- STEP 1: PERFIL -->
+  <div class="step active" id="step1">
+    <div class="step-title">Você é profissional da saúde?</div>
+    <div class="step-subtitle">Selecione seu perfil:</div>
+    <div class="option-card" role="radio" aria-label="Personal Trainer / Ed. Física" tabindex="0" onclick="selectOption(1, this, 'Personal Trainer / Ed. Física')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Personal Trainer / Ed. Física</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Nutricionista" tabindex="0" onclick="selectOption(1, this, 'Nutricionista')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Nutricionista</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Fisioterapeuta" tabindex="0" onclick="selectOption(1, this, 'Fisioterapeuta')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Fisioterapeuta</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Médico(a)" tabindex="0" onclick="selectOption(1, this, 'Médico(a)')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Médico(a)</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Dono(a) de academia / Studio" tabindex="0" onclick="selectOption(1, this, 'Dono(a) de academia / Studio')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Dono(a) de academia / Studio</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Dono(a) de clínica / Spa" tabindex="0" onclick="selectOption(1, this, 'Dono(a) de clínica / Spa')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Dono(a) de clínica / Spa</span><div class="radio"></div></div>
+    <div class="option-card" role="radio" aria-label="Outro profissional" tabindex="0" onclick="selectOption(1, this, 'Outro profissional')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Outro profissional</span><div class="radio"></div></div>
+  </div>
+
+  <!-- STEP 2: AREA -->
+  <div class="step" id="step2">
+    <div class="step-title">Qual a sua área de atuação?</div>
+    <div class="options-scroll">
+      <div class="option-card" role="radio" aria-label="Educação Física / Personal" tabindex="0" onclick="selectOption(2, this, 'Educação Física / Personal')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Educação Física / Personal</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Nutrição" tabindex="0" onclick="selectOption(2, this, 'Nutrição')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Nutrição</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Medicina Esportiva" tabindex="0" onclick="selectOption(2, this, 'Medicina Esportiva')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Medicina Esportiva</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Fisioterapia" tabindex="0" onclick="selectOption(2, this, 'Fisioterapia')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Fisioterapia</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Endocrinologia" tabindex="0" onclick="selectOption(2, this, 'Endocrinologia')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Endocrinologia</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Medicina Estética" tabindex="0" onclick="selectOption(2, this, 'Medicina Estética')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Medicina Estética</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Cirurgia Plástica (pós-cirúrgico)" tabindex="0" onclick="selectOption(2, this, 'Cirurgia Plástica (pós-cirúrgico)')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Cirurgia Plástica (pós-cirúrgico)</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Outro" tabindex="0" onclick="selectOption(2, this, 'Outro')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Outro</span><div class="radio"></div></div>
+    </div>
+    <button class="btn-back" onclick="goBack(2)">&#8592; Voltar</button>
+  </div>
+
+  <!-- STEP 3: ESTADO -->
+  <div class="step" id="step3" role="radiogroup" aria-label="Selecione seu estado">
+    <div class="step-title">Qual o seu estado?</div>
+    <input type="text" class="search-input" id="searchEstado" placeholder="Buscar estado..." oninput="filterEstados(this.value)" aria-label="Buscar estado">
+    <div class="options-scroll" id="estadosList">
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'AC')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">AC — Acre</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'AL')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">AL — Alagoas</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'AP')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">AP — Amapá</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'AM')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">AM — Amazonas</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'BA')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">BA — Bahia</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'CE')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">CE — Ceará</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'DF')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">DF — Distrito Federal</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'ES')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">ES — Espírito Santo</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'GO')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">GO — Goiás</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'MA')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">MA — Maranhão</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'MT')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">MT — Mato Grosso</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'MS')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">MS — Mato Grosso do Sul</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'MG')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">MG — Minas Gerais</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'PA')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">PA — Pará</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'PB')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">PB — Paraíba</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'PR')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">PR — Paraná</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'PE')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">PE — Pernambuco</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'PI')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">PI — Piauí</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'RJ')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">RJ — Rio de Janeiro</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'RN')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">RN — Rio Grande do Norte</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'RS')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">RS — Rio Grande do Sul</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'RO')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">RO — Rondônia</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'RR')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">RR — Roraima</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'SC')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">SC — Santa Catarina</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'SP')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">SP — São Paulo</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'SE')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">SE — Sergipe</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" tabindex="0" onclick="selectOption(3, this, 'TO')" onkeydown="if(event.key==='Enter')this.click()"><span class="label">TO — Tocantins</span><div class="radio"></div></div>
+    </div>
+    <button class="btn-back" onclick="goBack(3)">&#8592; Voltar</button>
+  </div>
+
+  <!-- STEP 4: DADOS DO LEAD (Nome, Telefone, Email, Cidade, Instagram) -->
+  <div class="step" id="step4">
+    <div class="step-title">Para finalizar, seus dados:</div>
+    <div class="step-subtitle">Vamos te conectar ao consultor especialista.</div>
+    <div class="form-field">
+      <label class="form-label" for="inputNome">Nome completo *</label>
+      <input class="form-input" type="text" id="inputNome" placeholder="Como você se chama?" autocomplete="name">
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="inputTelefone">WhatsApp *</label>
+      <input class="form-input" type="tel" id="inputTelefone" placeholder="(11) 99999-9999" autocomplete="tel">
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="inputEmail">E-mail *</label>
+      <input class="form-input" type="email" id="inputEmail" placeholder="seu@email.com" autocomplete="email" required>
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="inputCidade">Cidade <span class="form-label-opt">(opcional)</span></label>
+      <input class="form-input" type="text" id="inputCidade" placeholder="Sua cidade" autocomplete="address-level2">
+    </div>
+    <div class="form-field">
+      <label class="form-label" for="inputInstagram">Instagram <span class="form-label-opt">(opcional)</span></label>
+      <input class="form-input" type="text" id="inputInstagram" placeholder="@seuperfil">
+    </div>
+    <button class="btn-primary" id="btnStep4" disabled onclick="goToStep(5)">Continuar &#10140;</button>
+    <button class="btn-back" onclick="goBack(4)">&#8592; Voltar</button>
+  </div>
+
+  <!-- STEP 5: RMKT + WHATSAPP DIRETO -->
+  <div class="step" id="step5" role="radiogroup" aria-label="Como conheceu a marca">
+    <div class="step-title">Como você conheceu a Visbody Brasil?</div>
+    <div class="selections-summary" id="selectionsSummary"></div>
+    <div class="step-subtitle">Selecione e fale direto com nosso consultor pelo WhatsApp.</div>
+    <div class="options-scroll">
+      <div class="option-card" role="radio" aria-label="Já vi uma demonstração" tabindex="0" onclick="selectRmkt(this, 0)" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Já vi uma demonstração</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Vi nas redes sociais" tabindex="0" onclick="selectRmkt(this, 1)" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Vi nas redes sociais</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Indicação de colega" tabindex="0" onclick="selectRmkt(this, 2)" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Indicação de colega</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Congresso / Evento" tabindex="0" onclick="selectRmkt(this, 3)" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Congresso / Evento</span><div class="radio"></div></div>
+      <div class="option-card" role="radio" aria-label="Primeira vez que vejo" tabindex="0" onclick="selectRmkt(this, 4)" onkeydown="if(event.key==='Enter')this.click()"><span class="label">Primeira vez que vejo</span><div class="radio"></div></div>
+    </div>
+    <div class="rmkt-cta-preview" id="rmktPreview">
+      <div class="rmkt-cta-label">Mensagem que sera enviada:</div>
+      <div id="rmktPreviewText"></div>
+    </div>
+    <a class="btn-whatsapp-rmkt" id="btnWhatsappRmkt" href="#" target="_blank" onclick="openWhatsappFromRmkt()">
+<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>      Falar no WhatsApp
+    </a>
+    <div class="privacy-note" id="rmktPrivacy" style="display:none;">Você será redirecionado ao WhatsApp do consultor com a mensagem acima. <a href="#" target="_blank">Política de Privacidade</a></div>
+    <button class="btn-back" onclick="goBack(5)">&#8592; Voltar</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="stepSuccess">
+    <div class="success-icon">
+<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>    </div>
+    <div class="success-title">Redirecionando ao WhatsApp...</div>
+    <div class="success-text">Se o WhatsApp não abrir automaticamente, clique no botão abaixo:</div>
+    <a class="btn-open-whatsapp" id="whatsappLink" href="#" target="_blank">
+<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>      Abrir WhatsApp
+    </a>
+  </div>
+
+  <!-- FOOTER: Logo completo da marca -->
+  <div class="form-footer">
+    <img src="Logos/VISBODY 1X1 BRANCO.png" alt="Visbody Brasil" onerror="this.style.display='none'">
+    <div class="footer-text">Tecnologia que transforma resultados</div>
+  </div>
+</div>
+
+<script>
+  const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431", "553196080940"];
+  const WHATSAPP_NUMBER = SDR_NUMBERS[Math.floor(Math.random() * SDR_NUMBERS.length)];
+  const BRAND_NAME = 'Visbody Brasil';
+  const totalSteps = 5;
+  let currentStep = 1;
+  let formData = {};
+  let selectedRmktCta = '';
+
+  // Webhook do Google Apps Script (grava na planilha Cliente Final/Profissionais YYYY-MM)
+  const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwooVN7ogsNcP3t3wOdKiyGSgAfxajkDZapG-JHmZ5rh330PqssorvcG3iE-fCOZ6rhyQ/exec';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const equipamento = urlParams.get('equipamento') || 'S30';
+  const utmSource = urlParams.get('utm_source') || '';
+  const utmMedium = urlParams.get('utm_medium') || '';
+  const utmCampaign = urlParams.get('utm_campaign') || '';
+
+  const equipTaglines = {"S30": "Visbody S-30 — Scanner 3D completo em 10 segundos. IA analisa composição corporal, postura e circunferências. Ideal como avaliação gratuita para captação de pacientes.", "Creator600": "Creator-600 — Scanner avançado com análise facial + corporal por IA. Diagnóstico de pele, envelhecimento facial e composição corporal.", "M30": "Visbody M-30 — Análise segmentar detalhada por membros. Ideal para acompanhamento fitness e pós-cirúrgico. Sessão: R$ 100–R$ 300."};
+  const rmktOptions = [{"label": "Já vi uma demonstração", "cta": "Olá! Já vi uma demonstração do S30 e quero saber mais sobre condições comerciais."}, {"label": "Vi nas redes sociais", "cta": "Olá! Vi o S30 nas redes sociais e gostaria de mais informações."}, {"label": "Indicação de colega", "cta": "Olá! Recebi indicação de um colega sobre o S30 e tenho interesse."}, {"label": "Congresso / Evento", "cta": "Olá! Conheci o S30 em um congresso e quero saber mais."}, {"label": "Primeira vez que vejo", "cta": "Olá! Vi o anúncio do S30 e gostaria de conhecer melhor o equipamento."}];
+  const greetings = {"_default": "Bem-vindo! A Visbody é líder mundial em escaneamento corporal com IA. A Contourline é distribuidora oficial no Brasil.", "S30": "Bem-vindo! O Visbody S-30 faz escaneamento 3D completo em 10 segundos. A IA analisa composição corporal, postura, circunferências, IMC e risco metabólico. Use como avaliação gratuita para captar novos pacientes e aumentar ticket médio!", "Creator600": "Bem-vindo! O Creator-600 é o scanner mais avançado da Visbody: análise facial (pele e envelhecimento) + corporal por IA em um único equipamento. Diagnóstico completo para personalização de tratamentos.", "M30": "Bem-vindo! O Visbody M-30 faz análise segmentar detalhada por membros — ideal para acompanhamento de evolução fitness e pós-cirúrgico. Sessões de R$ 100 a R$ 300 como porta de entrada na clínica."};
+
+  // Exibe saudação personalizada
+  const greetBar = document.getElementById('greetingBar');
+  if (greetBar) {
+    const greetMsg = (equipamento && greetings[equipamento]) ? greetings[equipamento] : greetings['_default'] || '';
+    if (greetMsg) {
+      greetBar.textContent = greetMsg;
+      greetBar.style.display = 'block';
+    } else {
+      greetBar.style.display = 'none';
+    }
+  }
+
+  if (equipamento) {
+    formData.equipamento = equipamento;
+    const badge = document.getElementById('equipBadge');
+    badge.textContent = equipamento;
+    badge.style.display = 'inline-flex';
+    if (equipTaglines[equipamento]) {
+      document.getElementById('tagline').textContent = equipTaglines[equipamento];
+    }
+  }
+  if (utmSource) formData.utm_source = utmSource;
+  if (utmMedium) formData.utm_medium = utmMedium;
+  if (utmCampaign) formData.utm_campaign = utmCampaign;
+
+  function selectOption(step, el, value) {
+    const parent = el.parentElement;
+    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    const keys = { 1: 'perfil', 2: 'area', 3: 'estado' };
+    formData[keys[step]] = value;
+    setTimeout(() => goToStep(step + 1), 500);
+  }
+
+  // ╔══════════════════════════════════════════════════════════╗
+  // ║  VALIDAÇÃO DOS INPUTS DO STEP 4 (Dados)                 ║
+  // ╚══════════════════════════════════════════════════════════╝
+
+  function maskPhone(e) {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    if (v.length > 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    else if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+    e.target.value = v;
+  }
+
+  function isValidNome(value) {
+    const trimmed = value.trim();
+    return trimmed.length >= 3 && /\s/.test(trimmed);
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  }
+
+  function validateStep4() {
+    const nome = document.getElementById('inputNome').value.trim();
+    const tel = document.getElementById('inputTelefone').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
+    const telDigits = tel.replace(/\D/g, '');
+
+    const okNome = isValidNome(nome);
+    const okTel = telDigits.length >= 10;
+    const okEmail = isValidEmail(email);
+
+    document.getElementById('btnStep4').disabled = !(okNome && okTel && okEmail);
+
+    const checks = [
+      { el: document.getElementById('inputNome'), ok: okNome, bad: nome.length > 2 && !okNome },
+      { el: document.getElementById('inputTelefone'), ok: okTel, bad: telDigits.length > 0 && telDigits.length < 10 },
+      { el: document.getElementById('inputEmail'), ok: okEmail, bad: email.length > 5 && !okEmail }
+    ];
+    checks.forEach(c => {
+      c.el.classList.toggle('valid', c.ok);
+      c.el.classList.toggle('invalid', c.bad);
+    });
+  }
+
+  // ╔══════════════════════════════════════════════════════════╗
+  // ║  SALVAR NA PLANILHA (Google Apps Script webhook)        ║
+  // ╚══════════════════════════════════════════════════════════╝
+
+  function saveToSheet(data) {
+    if (!SHEET_WEBHOOK) return;
+    const normalized = {};
+    for (const [key, value] of Object.entries(data)) {
+      normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
+    }
+    fetch(SHEET_WEBHOOK, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(normalized)
+    }).catch(err => console.error('[SHEET] Erro ao salvar:', err));
+  }
+
+  function selectRmkt(el, index) {
+    const parent = el.parentElement;
+    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+
+    const opt = rmktOptions[index];
+    formData.rmkt = opt.label;
+    selectedRmktCta = opt.cta;
+
+    // Track interesse antes do clique no WhatsApp
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'InitiateCheckout', {
+        content_name: formData.equipamento || BRAND_NAME,
+        content_category: formData.area || 'geral',
+        content_ids: [formData.rmkt],
+        value: 0,
+        currency: 'BRL'
+      });
+    }
+
+    // Monta mensagem WhatsApp com TODOS os dados coletados
+    const lines = [];
+    lines.push(opt.cta);
+    lines.push('');
+    lines.push('--- Dados do Lead ---');
+    if (formData.nome) lines.push('Nome: ' + formData.nome);
+    if (formData.telefone) lines.push('Telefone: ' + formData.telefone);
+    if (formData.email) lines.push('Email: ' + formData.email);
+    if (formData.instagram) lines.push('Instagram: ' + formData.instagram);
+    if (formData.cidade) lines.push('Cidade: ' + formData.cidade);
+    if (formData.perfil) lines.push('Perfil: ' + formData.perfil);
+    if (formData.area) lines.push('Area: ' + formData.area);
+    if (formData.estado) lines.push('Estado: ' + formData.estado);
+    if (formData.equipamento) lines.push('Equipamento: ' + formData.equipamento);
+    if (formData.rmkt) lines.push('Como conheceu: ' + formData.rmkt);
+    if (formData.utm_source || formData.utm_medium || formData.utm_campaign) {
+      lines.push('');
+      lines.push('--- Origem ---');
+      if (formData.utm_source) lines.push('Source: ' + formData.utm_source);
+      if (formData.utm_medium) lines.push('Medium: ' + formData.utm_medium);
+      if (formData.utm_campaign) lines.push('Campaign: ' + formData.utm_campaign);
+    }
+    const message = lines.join('\n');
+    const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+
+    // Mostra preview + botao WhatsApp
+    document.getElementById('rmktPreviewText').textContent = opt.cta;
+    document.getElementById('rmktPreview').classList.add('visible');
+    const btn = document.getElementById('btnWhatsappRmkt');
+    btn.href = whatsappUrl;
+    btn.classList.add('visible');
+    document.getElementById('rmktPrivacy').style.display = 'block';
+  }
+
+  function openWhatsappFromRmkt() {
+    const btn = document.getElementById('btnWhatsappRmkt');
+    // Loading state
+    btn.classList.add('loading');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none" stroke-dasharray="31.4 31.4"/></svg> Redirecionando...';
+    // Meta Pixel: track Lead conversion
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'Lead', {
+        content_name: formData.equipamento || BRAND_NAME,
+        content_category: formData.area || 'geral',
+        value: 0,
+        currency: 'BRL'
+      });
+    }
+    // Grava na planilha (não bloqueia o redirect — fetch no-cors em background)
+    saveToSheet({
+      nome: formData.nome || '',
+      telefone: formData.telefone || '',
+      email: formData.email || '',
+      instagram: formData.instagram || '',
+      cidade: formData.cidade || '',
+      perfil: formData.perfil || '',
+      especialidade: formData.area || '',
+      equipamento: formData.equipamento || BRAND_NAME,
+      comoConheceu: formData.rmkt || '',
+      brand: BRAND_NAME,
+      estado: formData.estado || '',
+      source: formData.utm_source || '',
+      medium: formData.utm_medium || '',
+      campaign: formData.utm_campaign || ''
+    });
+    // Fallback para WebView do Instagram que bloqueia window.open
+    const w = window.open(btn.href, '_blank');
+    if (!w || w.closed) window.location.href = btn.href;
+    // Mostra tela de sucesso
+    setTimeout(() => {
+      document.getElementById('step5').classList.remove('active');
+      document.getElementById('stepSuccess').classList.add('active');
+      document.querySelectorAll('.progress-segment').forEach(s => {
+        s.classList.remove('active'); s.classList.add('done');
+      });
+    }, 600);
+  }
+
+  // Filtro de estados
+  function filterEstados(query) {
+    const normalizar = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const q = normalizar(query);
+    const cards = document.querySelectorAll('#estadosList .option-card');
+    cards.forEach(card => {
+      const text = normalizar(card.querySelector('.label').textContent);
+      card.classList.toggle('hidden', !text.includes(q));
+    });
+  }
+
+  // Resumo de selecoes no Step 5 (RMKT)
+  function updateSelectionsSummary() {
+    const summary = document.getElementById('selectionsSummary');
+    if (!summary) return;
+    const parts = [];
+    if (formData.nome) parts.push('<strong>Nome:</strong> ' + formData.nome);
+    if (formData.perfil) parts.push('<strong>Perfil:</strong> ' + formData.perfil);
+    if (formData.area) parts.push('<strong>Área:</strong> ' + formData.area);
+    if (formData.estado) parts.push('<strong>Estado:</strong> ' + formData.estado);
+    if (formData.equipamento) parts.push('<strong>Equipamento:</strong> ' + formData.equipamento);
+    summary.innerHTML = parts.join(' &middot; ');
+    summary.style.display = parts.length > 0 ? 'block' : 'none';
+  }
+
+  function goToStep(step) {
+    if (step < 1 || step > totalSteps + 1) return;
+    const currentEl = currentStep <= totalSteps
+      ? document.getElementById('step' + currentStep)
+      : document.getElementById('stepSuccess');
+    currentEl.classList.remove('active');
+    currentStep = step;
+    const nextEl = step <= totalSteps
+      ? document.getElementById('step' + step)
+      : document.getElementById('stepSuccess');
+    nextEl.classList.remove('active');
+    void nextEl.offsetWidth;
+    nextEl.classList.add('active');
+    // Scroll suave ao topo do step para mobile
+    nextEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateProgress();
+    // Ao entrar no Step 4 (Dados), foca o primeiro input
+    if (step === 4) {
+      setTimeout(() => {
+        const elNome = document.getElementById('inputNome');
+        if (elNome) elNome.focus();
+      }, 350);
+    }
+    // Ao entrar no Step 5 (RMKT), copia os dados dos inputs pro formData e atualiza resumo
+    if (step === 5) {
+      const getVal = (id) => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+      formData.nome = getVal('inputNome');
+      formData.telefone = getVal('inputTelefone');
+      formData.email = getVal('inputEmail');
+      formData.instagram = getVal('inputInstagram');
+      formData.cidade = getVal('inputCidade');
+      updateSelectionsSummary();
+    }
+    // Limpa busca de estados ao voltar/avançar
+    const searchInput = document.getElementById('searchEstado');
+    if (searchInput) { searchInput.value = ''; filterEstados(''); }
+  }
+
+  function goBack(fromStep) {
+    document.getElementById('step' + fromStep).classList.remove('active');
+    currentStep = fromStep - 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const segments = document.querySelectorAll('.progress-segment');
+    segments.forEach((seg, i) => {
+      seg.classList.remove('active', 'done');
+      if (i < currentStep - 1) seg.classList.add('done');
+      else if (i === currentStep - 1) seg.classList.add('active');
+    });
+  }
+
+  // Event listeners dos inputs do Step 4 (validação ao vivo + máscara)
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputTel = document.getElementById('inputTelefone');
+    if (inputTel) inputTel.addEventListener('input', maskPhone);
+    ['inputNome', 'inputTelefone', 'inputEmail'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', validateStep4);
+    });
+  });
+
+</script>
+</body>
+</html>

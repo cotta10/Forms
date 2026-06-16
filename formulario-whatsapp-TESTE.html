@@ -1,0 +1,2817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Formulário de Contato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       🎨 LUNA — Design System v2.0
+       Design Tokens por Marca + Sistema de Temas
+       ═══════════════════════════════════════════════════════ */
+
+    :root {
+      /* ── Base (Dark Theme) ── */
+      --bg-primary: #0a0c10;
+      --bg-secondary: #12151c;
+      --bg-card: #171b24;
+      --bg-card-hover: #1c2030;
+      --bg-card-selected: rgba(var(--accent-rgb), 0.08);
+
+      --border-default: #222738;
+      --border-hover: #2e3448;
+      --border-selected: var(--accent);
+
+      --text-primary: #f0f2f5;
+      --text-secondary: #8b92a5;
+      --text-muted: #565e73;
+      --text-on-accent: #ffffff;
+
+      /* ── Accent (default — Contourline blue) ── */
+      --accent: #00b4d8;
+      --accent-rgb: 0, 180, 216;
+      --accent-hover: #0096b4;
+      --accent-glow: rgba(0, 180, 216, 0.15);
+      --accent-subtle: rgba(0, 180, 216, 0.06);
+
+      /* ── Feedback ── */
+      --success: #10b981;
+      --success-rgb: 16, 185, 129;
+      --error: #ef4444;
+      --error-rgb: 239, 68, 68;
+      --warning: #f59e0b;
+
+      /* ── WhatsApp ── */
+      --whatsapp: #25d366;
+      --whatsapp-hover: #1fb855;
+
+      /* ── Spacing ── */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+
+      /* ── Radius ── */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      /* ── Typography ── */
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-xs: 11px;
+      --font-sm: 13px;
+      --font-base: 15px;
+      --font-lg: 18px;
+      --font-xl: 22px;
+      --font-2xl: 28px;
+
+      /* ── Shadows ── */
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-elevated: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-glow: 0 0 20px var(--accent-glow);
+
+      /* ── Transitions ── */
+      --transition-fast: 0.15s ease;
+      --transition-base: 0.25s ease;
+      --transition-slow: 0.4s ease;
+    }
+
+    /* ── Temas por Marca ── */
+    [data-brand="contourline"] {
+      --accent: #00b4d8;
+      --accent-rgb: 0, 180, 216;
+      --accent-hover: #0096b4;
+      --accent-glow: rgba(0, 180, 216, 0.15);
+    }
+
+    [data-brand="contourline_med"],
+    [data-brand="contourlinemed"] {
+      --accent: #6366f1;
+      --accent-rgb: 99, 102, 241;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+    }
+
+    [data-brand="lumenis"] {
+      --accent: #c9a44a;
+      --accent-rgb: 201, 164, 74;
+      --accent-hover: #b8923a;
+      --accent-glow: rgba(201, 164, 74, 0.15);
+    }
+
+    [data-brand="bodyhealth"] {
+      --accent: #14b8a6;
+      --accent-rgb: 20, 184, 166;
+      --accent-hover: #0d9488;
+      --accent-glow: rgba(20, 184, 166, 0.15);
+    }
+
+    [data-brand="visbody"] {
+      --accent: #8b5cf6;
+      --accent-rgb: 139, 92, 246;
+      --accent-hover: #7c3aed;
+      --accent-glow: rgba(139, 92, 246, 0.15);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════════════════ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      background-image: url("WhatsApp%20Image%202026-03-27%20at%2011.36.07.jpeg");
+      background-size: 400px auto;
+      background-repeat: repeat;
+      padding: var(--space-md);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: var(--space-lg) 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       🎨 LUNA — Header com Glow
+       ═══════════════════════════════════════════════════════ */
+    .header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      position: relative;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--space-md);
+    }
+
+    .logo-glow {
+      position: absolute;
+      inset: -8px;
+      background: var(--accent-glow);
+      border-radius: 50%;
+      filter: blur(16px);
+      opacity: 0.6;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    .logo {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: var(--bg-card);
+      padding: 10px;
+      border: 2px solid var(--border-default);
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-name {
+      font-size: var(--font-xl);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-xs);
+    }
+
+    .brand-tagline {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ── ✍️ ECHO — Headline persuasivo (aparece abaixo do tagline) ── */
+    .brand-headline {
+      font-size: var(--font-base);
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: var(--space-sm);
+      line-height: 1.3;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.3s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       📊 SAGE — Progress Bar com % e texto motivacional
+       ═══════════════════════════════════════════════════════ */
+    .progress-wrapper {
+      margin-bottom: var(--space-xl);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .progress-label {
+      font-size: var(--font-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .progress-percent {
+      font-size: var(--font-xs);
+      font-weight: 700;
+      color: var(--accent);
+      transition: all var(--transition-base);
+    }
+
+    .progress-bar {
+      display: flex;
+      gap: 6px;
+    }
+
+    .progress-step {
+      flex: 1;
+      height: 4px;
+      background: var(--bg-card);
+      border-radius: var(--radius-full);
+      transition: all var(--transition-slow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-step::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      border-radius: inherit;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-step.active::after,
+    .progress-step.done::after {
+      transform: scaleX(1);
+    }
+
+    .progress-motivational {
+      font-size: var(--font-xs);
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: var(--space-sm);
+      transition: opacity var(--transition-base);
+      min-height: 16px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEPS — Animações de entrada
+       ═══════════════════════════════════════════════════════ */
+    .step {
+      display: none;
+      animation: stepIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step.active { display: block; }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-title {
+      font-size: var(--font-lg);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-xs);
+    }
+
+    .step-subtitle {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       GROUP LABELS
+       ═══════════════════════════════════════════════════════ */
+    .group-label {
+      font-size: var(--font-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-sm);
+      margin-top: var(--space-md);
+      padding-left: var(--space-xs);
+    }
+
+    .group-label:first-of-type { margin-top: 0; }
+
+    /* ═══════════════════════════════════════════════════════
+       🎨 LUNA — Cards de Opção (com micro-interações)
+       ═══════════════════════════════════════════════════════ */
+    .option-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px var(--space-md);
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ripple effect on tap */
+    .option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), var(--accent-glow) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .option:active::before { opacity: 1; }
+
+    .option:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+
+    .option.selected {
+      border-color: var(--accent);
+      background: var(--bg-card-selected);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .option-label {
+      font-size: var(--font-base);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+    }
+
+    .option-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border-hover);
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .option.selected .option-radio {
+      border-color: var(--accent);
+      background: var(--accent);
+      animation: radioCheck 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes radioCheck {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .option.selected .option-radio::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      background: var(--text-on-accent);
+      border-radius: 50%;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FORM INPUTS
+       ═══════════════════════════════════════════════════════ */
+    .form-group {
+      margin-bottom: var(--space-md);
+      position: relative;
+    }
+
+    .form-label {
+      font-size: var(--font-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-label .optional {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 15px var(--space-md);
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: var(--font-base);
+      font-family: var(--font-family);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ── Validação inline ── */
+    .form-input.valid {
+      border-color: var(--success);
+    }
+
+    .form-input.invalid {
+      border-color: var(--error);
+    }
+
+    .input-hint {
+      font-size: var(--font-xs);
+      color: var(--text-muted);
+      margin-top: var(--space-xs);
+      display: none;
+    }
+
+    .input-hint.visible { display: block; }
+    .input-hint.error { color: var(--error); }
+
+    /* ═══════════════════════════════════════════════════════
+       🎨 LUNA — Botões com micro-interações
+       ═══════════════════════════════════════════════════════ */
+    .btn {
+      width: 100%;
+      padding: var(--space-md);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--font-base);
+      font-weight: 700;
+      font-family: var(--font-family);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-top: var(--space-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text-on-accent);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: var(--font-sm);
+      font-weight: 500;
+      margin-top: var(--space-md);
+    }
+
+    .btn-back:hover { color: var(--text-primary); }
+
+    /* ═══════════════════════════════════════════════════════
+       📊 SAGE — Social Proof Badge
+       ═══════════════════════════════════════════════════════ */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--accent-subtle);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-lg);
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.5s forwards;
+    }
+
+    .social-proof-icon {
+      font-size: 14px;
+    }
+
+    .social-proof-text {
+      font-size: var(--font-xs);
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .social-proof-text strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       📊 SAGE — Trust Badges (Step 2)
+       ═══════════════════════════════════════════════════════ */
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      padding: var(--space-md) 0;
+    }
+
+    .trust-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .trust-badge-icon {
+      font-size: 18px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+    }
+
+    .trust-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SUCCESS SCREEN (redesigned)
+       ═══════════════════════════════════════════════════════ */
+    .success-wrapper {
+      text-align: center;
+      padding: var(--space-xl) 0;
+    }
+
+    .success-icon-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--space-lg);
+    }
+
+    .success-icon-bg {
+      width: 80px;
+      height: 80px;
+      background: rgba(var(--success-rgb), 0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: successPop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .success-checkmark {
+      width: 36px;
+      height: 36px;
+    }
+
+    .success-checkmark path {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.5s ease 0.3s forwards;
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .success-rings {
+      position: absolute;
+      inset: -12px;
+      border: 2px solid rgba(var(--success-rgb), 0.2);
+      border-radius: 50%;
+      animation: ringExpand 0.8s ease 0.2s forwards;
+      opacity: 0;
+    }
+
+    @keyframes ringExpand {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+
+    .success-title {
+      font-size: var(--font-xl);
+      font-weight: 800;
+      margin-bottom: var(--space-sm);
+    }
+
+    .success-text {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+      max-width: 320px;
+      margin-inline: auto;
+    }
+
+    /* ── Next Steps (tela de sucesso) ── */
+    .next-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      text-align: left;
+      padding: var(--space-md);
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+    }
+
+    .next-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .next-step-num {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-xs);
+      font-weight: 700;
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: var(--text-on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: var(--font-base);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-whatsapp:hover {
+      background: var(--whatsapp-hover);
+      transform: translateY(-1px);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       LOADING
+       ═══════════════════════════════════════════════════════ */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: var(--space-2xl) 0;
+    }
+
+    .loading.active { display: block; }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--bg-card);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto var(--space-md);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       ERROR
+       ═══════════════════════════════════════════════════════ */
+    .error-msg {
+      background: rgba(var(--error-rgb), 0.08);
+      border: 1px solid rgba(var(--error-rgb), 0.2);
+      color: #f87171;
+      padding: 12px var(--space-md);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-sm);
+      margin-top: var(--space-md);
+      display: none;
+      line-height: 1.4;
+    }
+
+    .error-msg.visible { display: block; }
+
+    /* ═══════════════════════════════════════════════════════
+       SPECIALTY SUB-STEP
+       ═══════════════════════════════════════════════════════ */
+    #specialtySection {
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SEPARATOR
+       ═══════════════════════════════════════════════════════ */
+    .separator {
+      height: 1px;
+      background: var(--border-default);
+      margin: 12px 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════ */
+    .footer {
+      text-align: center;
+      padding: var(--space-xl) 0 var(--space-md);
+      margin-top: var(--space-lg);
+      border-top: 1px solid var(--border-default);
+    }
+
+    .footer-logo {
+      height: 22px;
+      opacity: 0.3;
+      transition: opacity var(--transition-base);
+    }
+
+    .footer-logo:hover { opacity: 0.6; }
+
+    .footer-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: var(--space-sm);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       📊 SAGE — Tracking Pixel (invisible)
+       ═══════════════════════════════════════════════════════ */
+    .tracking-pixel {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       📱 RESPONSIVE — Mobile First
+       ═══════════════════════════════════════════════════════ */
+
+    /* Telas pequenas (até 480px) */
+    @media (max-width: 480px) {
+      body {
+        padding: var(--space-sm);
+      }
+
+      body::before {
+        background-size: 150px 150px;
+        opacity: 0.025;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: var(--space-md) 0;
+      }
+
+      .header {
+        margin-bottom: var(--space-lg);
+      }
+
+      .logo-img {
+        width: 56px;
+        height: 56px;
+      }
+
+      .brand-name {
+        font-size: var(--font-xl);
+      }
+
+      .brand-tagline {
+        font-size: var(--font-xs);
+      }
+
+      .headline {
+        font-size: var(--font-sm);
+        padding: 0 var(--space-sm);
+      }
+
+      .social-proof {
+        font-size: var(--font-xs);
+        padding: 8px 12px;
+      }
+
+      .progress-bar {
+        margin-bottom: var(--space-md);
+      }
+
+      .step-title {
+        font-size: var(--font-lg);
+      }
+
+      .step-subtitle {
+        font-size: var(--font-xs);
+      }
+
+      .option-card {
+        padding: 12px var(--space-md);
+      }
+
+      .option-label {
+        font-size: var(--font-sm);
+      }
+
+      .form-label {
+        font-size: var(--font-xs);
+      }
+
+      .form-input {
+        padding: 12px var(--space-md);
+        font-size: var(--font-base);
+      }
+
+      .form-hint {
+        font-size: 10px;
+      }
+
+      .btn {
+        padding: 14px var(--space-md);
+        font-size: var(--font-sm);
+      }
+
+      .btn-back {
+        font-size: var(--font-xs);
+        padding: 10px;
+      }
+
+      .group-label {
+        font-size: 10px;
+      }
+
+      /* Success / Obrigado */
+      .success-title {
+        font-size: var(--font-xl) !important;
+      }
+
+      .success-text {
+        font-size: var(--font-sm) !important;
+        max-width: 100% !important;
+        padding: 0 var(--space-sm);
+      }
+
+      .success-card-wa {
+        max-width: 100%;
+        padding: var(--space-md);
+        margin: var(--space-md) auto;
+      }
+
+      .wa-icon-circle {
+        width: 44px !important;
+        height: 44px !important;
+      }
+
+      .wa-icon-circle svg {
+        width: 24px !important;
+        height: 24px !important;
+      }
+
+      .footer {
+        padding: var(--space-md) 0 var(--space-sm);
+      }
+
+      .footer-logo {
+        height: 18px;
+      }
+
+      .footer-text {
+        font-size: 9px;
+      }
+    }
+
+    /* Telas muito pequenas (até 360px) */
+    @media (max-width: 360px) {
+      :root {
+        --space-md: 12px;
+        --space-lg: 18px;
+        --space-xl: 24px;
+      }
+
+      .brand-name {
+        font-size: var(--font-lg);
+      }
+
+      .headline {
+        font-size: var(--font-xs);
+      }
+
+      .step-title {
+        font-size: var(--font-base);
+      }
+
+      .option-card {
+        padding: 10px 12px;
+      }
+
+      .option-label {
+        font-size: var(--font-xs);
+      }
+    }
+
+    /* Safe area para iPhone com notch */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+    /* ═══════════════════════════════════════════════════════
+       CINEMATIC PARTICLES + GLOW
+       ═══════════════════════════════════════════════════════ */
+
+    .cinematic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0;
+      animation: glowPulse 10s ease-in-out infinite;
+    }
+
+    .glow-orb:nth-child(1) {
+      width: 500px;
+      height: 500px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .glow-orb:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      top: 50%;
+      right: 5%;
+      animation-delay: 3.5s;
+    }
+
+    .glow-orb:nth-child(3) {
+      width: 450px;
+      height: 450px;
+      bottom: 5%;
+      left: 30%;
+      animation-delay: 7s;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.05; transform: scale(0.8); }
+      50% { opacity: 0.3; transform: scale(1.3); }
+    }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(-10vh) translateX(30px);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TRACKING PIXELS — Contourline
+       Facebook Pixel: 580445538791855 (Pixel Home BodyHealth/Contourline)
+       ═══════════════════════════════════════════════════════ -->
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '580445538791855');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=580445538791855&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google tag (gtag.js) — Google Tag (G-) + Google Ads (AW-) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8B7LV4PC4J"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8B7LV4PC4J');   // Google Tag (remarketing + analytics)
+    gtag('config', 'AW-993310353');   // Google Ads
+  </script>
+  <!-- End Google tag -->
+
+</head>
+<body>
+
+<!-- ═══════ BANNER DE TESTE (somente no arquivo TESTE) ═══════ -->
+<div id="testBanner" style="position:sticky;top:0;z-index:99999;background:linear-gradient(90deg,#f59e0b,#ea580c);color:#0a0c10;padding:10px 16px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-align:center;letter-spacing:0.3px;box-shadow:0 2px 12px rgba(245,158,11,0.4);">
+  &#129514; FORMULARIO DE TESTE &mdash; nao abre WhatsApp e nao salva na planilha. Usado para validar o fluxo de qualificacao anti-leads desqualificados.
+</div>
+
+<!-- Modal de resultado simulado -->
+<div id="testResultModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#171b24;border:1px solid #2e3448;border-radius:16px;padding:28px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;color:#f0f2f5;font-family:'Inter',sans-serif;">
+    <div id="testResultTitle" style="font-size:20px;font-weight:700;margin-bottom:12px;"></div>
+    <div id="testResultBody" style="font-size:14px;line-height:1.6;color:#cbd5e1;margin-bottom:16px;"></div>
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#565e73;margin-bottom:6px;">Payload simulado</div>
+    <pre id="testResultPayload" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#a5b4fc;background:#0a0c10;padding:12px;border-radius:8px;border:1px solid #222738;overflow-x:auto;line-height:1.6;white-space:pre-wrap;word-break:break-all;"></pre>
+    <button onclick="document.getElementById('testResultModal').style.display='none';location.reload();" style="background:#00b4d8;color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;width:100%;font-family:inherit;">Testar outro cenario &rarr;</button>
+  </div>
+</div>
+
+<!-- Cinematic Background -->
+<div class="cinematic-bg" id="cinematicBg">
+  <div class="glow-orb"></div>
+  <div class="glow-orb"></div>
+  <div class="glow-orb"></div>
+  <div class="particles" id="particlesLayer"></div>
+</div>
+
+<div class="container" id="formContainer">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-wrapper">
+      <div class="logo-glow"></div>
+      <img class="logo" id="brandLogo" src="" alt="Logo">
+    </div>
+    <div class="brand-name" id="brandName"></div>
+    <div class="brand-tagline" id="brandTagline"></div>
+    <!-- ✍️ ECHO: Headline persuasivo por marca -->
+    <div class="brand-headline" id="brandHeadline"></div>
+  </div>
+
+  <!-- 📊 SAGE: Social Proof -->
+  <div class="social-proof" id="socialProof">
+    <span class="social-proof-icon">&#9889;</span>
+    <span class="social-proof-text" id="socialProofText"></span>
+  </div>
+
+  <!-- Progress Bar com % -->
+  <div class="progress-wrapper">
+    <div class="progress-info">
+      <span class="progress-label" id="progressLabel">Etapa 1 de 3</span>
+      <span class="progress-percent" id="progressPercent">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-step active" id="prog1"></div>
+      <div class="progress-step" id="prog2"></div>
+      <div class="progress-step" id="prog3"></div>
+    </div>
+    <div class="progress-motivational" id="progressMotivational">Leva menos de 30 segundos</div>
+  </div>
+
+  <!-- ═══════════ STEP 0: Equipamento (só quando UTM falha) ═══════════ -->
+  <div class="step" id="step0">
+    <div class="step-title">Qual equipamento você tem interesse?</div>
+    <div class="step-subtitle">Selecione para direcionarmos ao especialista certo</div>
+
+    <div class="group-label">Contourline</div>
+    <div class="option-list" id="equipContourline"></div>
+
+    <div class="group-label">Contourline Med</div>
+    <div class="option-list" id="equipMed"></div>
+
+    <div class="group-label">Lumenis</div>
+    <div class="option-list" id="equipLumenis"></div>
+
+    <div class="group-label">Body Health</div>
+    <div class="option-list" id="equipBodyHealth"></div>
+
+    <div class="group-label">Visbody</div>
+    <div class="option-list" id="equipVisbody"></div>
+
+    <div class="separator"></div>
+    <div class="option-list" id="equipNaoSei"></div>
+  </div>
+
+  <!-- ═══════════ STEP 1: Perfil ═══════════ -->
+  <div class="step" id="step1">
+    <!-- ✍️ ECHO: Copy persuasivo no step title -->
+    <div class="step-title" id="step1Title">Qual o seu perfil?</div>
+    <div class="step-subtitle" id="step1Subtitle">Assim podemos personalizar o atendimento para você</div>
+
+    <div class="group-label">Profissionais</div>
+    <div class="option-list" id="profilesProfissionais"></div>
+
+    <!-- Sub-step: Especialidade medica -->
+    <div id="specialtySection" style="display:none; margin-top:16px;">
+      <div class="option-list" id="specialtyOptions"></div>
+      <div id="customSpecialtyField" class="form-group" style="display:none; margin-top:12px;">
+        <input class="form-input" type="text" id="inputCustomSpecialty" placeholder="Digite sua especialidade">
+      </div>
+      <button class="btn btn-back" onclick="resetToProfiles()">&#8592; Trocar perfil</button>
+    </div>
+
+    <!-- Sub-step: Outro profissional (REMOVIDO — opcao nao existe mais nas marcas) -->
+    <div id="customProfileSection" style="display:none;"></div>
+
+    <div id="otherProfilesSection">
+      <div class="group-label">Negocios</div>
+      <div class="option-list" id="profilesNegocios"></div>
+
+      <div class="separator"></div>
+      <div class="option-list" id="profilesCliente"></div>
+    </div>
+
+    <!-- ✍️ ECHO: CTA com valor ao inves de "Continuar" -->
+    <button class="btn btn-primary" id="btnStep1" disabled onclick="goToStep(2)">Personalizar meu atendimento &#10140;</button>
+  </div>
+
+  <!-- ═══════════ STEP 2: Dados de Contato ═══════════ -->
+  <div class="step" id="step2">
+    <div class="step-title">Seus dados de contato</div>
+    <div class="step-subtitle">Para que possamos entrar em contato</div>
+
+    <div class="form-group">
+      <label class="form-label">Nome completo</label>
+      <input class="form-input" type="text" id="inputNome" placeholder="Como você se chama?" autocomplete="name">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Telefone / WhatsApp</label>
+      <input class="form-input" type="tel" id="inputTelefone" placeholder="(11) 99999-9999" autocomplete="tel">
+      <div class="input-hint" id="hintTelefone">Vamos falar por aqui. Sem ligações inesperadas.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" id="inputEmail" placeholder="seu@email.com" autocomplete="email" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Instagram</label>
+      <input class="form-input" type="text" id="inputInstagram" placeholder="@seuperfil">
+    </div>
+
+    <button class="btn btn-primary" id="btnStep2" disabled onclick="goToStep(3)">Continuar &#10140;</button>
+    <button class="btn btn-back" onclick="goToStep(1)">&#8592; Voltar</button>
+  </div>
+
+  <!-- ═══════════ STEP 3: Estado + Cidade ═══════════ -->
+  <div class="step" id="step3">
+    <div class="step-title" id="step3Title">Qual seu estado?</div>
+    <div class="step-subtitle" id="step3Subtitle">Selecione onde voce atua</div>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <input class="form-input" type="text" id="inputBuscaEstado" placeholder="Buscar estado..." oninput="filterEstados()" style="font-size:14px;">
+    </div>
+
+    <div class="option-list" id="estadoOptions" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;"></div>
+
+    <!-- Cidade (aparece apos selecionar estado) -->
+    <div id="cidadeSection" style="display:none; margin-top:20px;">
+      <div class="step-title" style="font-size:18px;">E a cidade?</div>
+      <div class="option-list" id="cidadeOptions" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-top:12px;"></div>
+    </div>
+
+    <button class="btn btn-back" onclick="goToStep(2)">&#8592; Voltar</button>
+  </div>
+
+  <!-- ═══════════ STEP 4: Como Conheceu ═══════════ -->
+  <div class="step" id="step4">
+    <div class="step-title">Como voce nos encontrou?</div>
+    <div class="step-subtitle">Ajuda a gente a chegar em mais profissionais como voce</div>
+
+    <div class="option-list" id="sourceOptions"></div>
+
+    <button class="btn btn-whatsapp" id="btnSubmit" disabled onclick="submitForm()">Falar no WhatsApp &#10003;</button>
+    <button class="btn btn-back" onclick="goToStep(3)">&#8592; Voltar</button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- ═══════════ Sucesso / Obrigado ═══════════ -->
+  <style>
+    @keyframes waGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(37, 211, 102, 0.3), 0 0 40px rgba(37, 211, 102, 0.15); }
+      50% { box-shadow: 0 0 30px rgba(37, 211, 102, 0.5), 0 0 60px rgba(37, 211, 102, 0.25); }
+    }
+    @keyframes waRing1 {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { opacity: 0.4; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    @keyframes waRing2 {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { opacity: 0.25; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    @keyframes waPop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .wa-icon-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .wa-icon-circle {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex; align-items: center; justify-content: center;
+      animation: waPop 0.5s cubic-bezier(0.4, 0, 0.2, 1), waGlow 2.5s ease-in-out infinite;
+      position: relative; z-index: 2;
+    }
+    .wa-ring {
+      position: absolute; inset: -14px;
+      border: 2px solid rgba(37, 211, 102, 0.35);
+      border-radius: 50%;
+      animation: waRing1 2s ease-in-out infinite;
+    }
+    .wa-ring-outer {
+      position: absolute; inset: -28px;
+      border: 1.5px solid rgba(37, 211, 102, 0.18);
+      border-radius: 50%;
+      animation: waRing2 2.5s ease-in-out 0.3s infinite;
+    }
+    .success-card-wa {
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, var(--bg-card) 60%);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin: 24px auto;
+      max-width: 380px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .success-card-wa::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, #25d366, transparent);
+    }
+  </style>
+
+  <div class="step" id="stepSuccess">
+    <div class="success-wrapper" style="text-align:center; padding: 20px 0;">
+
+      <!-- Logo Contourline -->
+      <div style="margin-bottom: 28px;">
+        <img src="Logos/Logotipo fundo Contourline Branca.png" alt="Contourline" style="height: 48px; opacity: 0.9;">
+      </div>
+
+      <!-- Titulo -->
+      <div class="success-title" id="successTitle" style="font-size: 28px; font-weight: 800; margin-top: 8px;">
+        Obrigado!
+      </div>
+
+      <!-- Mensagem principal -->
+      <div class="success-text" id="successText" style="font-size: 15px; line-height: 1.6; color: var(--text-secondary); max-width: 380px; margin: 12px auto 0;">
+        Recebemos suas informações com sucesso.
+      </div>
+
+      <!-- Card informativo com borda verde -->
+      <div id="successInfoCard" class="success-card-wa">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+          <div class="wa-icon-wrap" style="margin: 0; flex-shrink: 0;">
+            <div class="wa-ring" style="inset: -8px;"></div>
+            <div class="wa-ring-outer" style="inset: -16px;"></div>
+            <div class="wa-icon-circle" style="width: 52px; height: 52px;">
+            <svg width="28" height="28" viewBox="0 0 39 39" fill="none">
+              <path d="M10.7 33.8l.6.4a16.1 16.1 0 008.2 2.2c8.9 0 16.1-7.2 16.1-16.1 0-4.3-1.7-8.3-4.7-11.4a16 16 0 00-11.4-4.7c-8.9 0-16.1 7.2-16.1 16.1 0 2.9.8 5.7 2.2 8.2l.4.6-1.5 5.6 5.6-1.5z" fill="#25d366"/>
+              <path d="M32.3 6.4A19.4 19.4 0 0019.5 1C9.3 1 1 9.3 1 19.5c0 3.3.9 6.4 2.4 9.2L1 38l9.5-2.5c2.7 1.4 5.7 2.1 8.8 2.1h0c10.2 0 18.7-8.3 18.7-18.5 0-4.9-1.9-9.6-5.4-13.1zM19.5 35c-2.8 0-5.5-.8-7.9-2.2l-.6-.3-5.8 1.5 1.5-5.6-.4-.6A15.5 15.5 0 014 19.5C4 11 11 4 19.5 4c4.1 0 8 1.6 10.9 4.5s4.5 6.8 4.5 10.9c0 8.5-7 15.5-15.5 15.5z" fill="#25d366"/>
+              <path d="M28.2 23.3c-.5-.2-2.7-1.3-3.1-1.5-.4-.2-.7-.2-1 .2-.3.5-1.2 1.5-1.4 1.8-.3.3-.5.3-1 .1-.5-.2-2-.7-3.7-2.3-1.4-1.2-2.3-2.7-2.5-3.2-.3-.5 0-.7.2-1 .2-.2.5-.5.7-.8.2-.3.3-.5.5-.8.2-.3.1-.5 0-.8-.1-.2-1-2.5-1.4-3.4-.4-.9-.8-.8-1-.8h-.9c-.3 0-.8.1-1.2.5s-1.6 1.5-1.6 3.8c0 2.2 1.6 4.4 1.9 4.7.2.3 3.2 4.9 7.8 6.9 1.1.5 1.9.7 2.6 1 1.1.3 2.1.3 2.9.2.9-.1 2.7-1.1 3.1-2.2.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5z" fill="#fff"/>
+            </svg>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight: 700; color: var(--text-primary); font-size: 15px;" id="successCardTitle">Proximo passo</div>
+            <div style="font-size: 12px; color: #25d366; font-weight: 500;">WhatsApp</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;" id="successCardDesc">
+          Você será direcionado para conversar com um de nossos especialistas pelo WhatsApp.
+        </div>
+      </div>
+
+      <!-- Botao WhatsApp -->
+      <a id="btnWhatsapp" href="#" class="btn-whatsapp" target="_blank" rel="noopener" style="
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 14px 32px; font-size: 16px; font-weight: 700;
+        border-radius: var(--radius-full);
+        text-decoration: none;
+      ">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.308-.734-5.983-1.975l-.418-.314-2.644.887.887-2.644-.314-.418A9.956 9.956 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+        Falar no WhatsApp
+      </a>
+
+      <!-- Texto fallback -->
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 12px;" id="successFallback">
+        Se o WhatsApp não abrir automaticamente, clique no botão acima
+      </div>
+
+      <!-- Contador regressivo -->
+      <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px; opacity: 0.6;" id="successCountdown">
+        Redirecionando em <span id="countdownTimer">5</span>s...
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <img class="footer-logo" src="Logos/Logotipo fundo Contourline Branca.png" alt="Contourline">
+    <div class="footer-text">Contourline Group &copy; 2026. Todos os direitos reservados.</div>
+  </div>
+
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  SDR ROTATION                                           ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431", "553196080940"];
+const WHATSAPP_NUMBER = SDR_NUMBERS[Math.floor(Math.random() * SDR_NUMBERS.length)];
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  MATCHMAKING — Base de Parceiros                        ║
+// ╚══════════════════════════════════════════════════════════╝
+let parceirosDB = [];
+fetch('parceiros.json').then(r => r.json()).then(data => {
+  parceirosDB = data;
+  console.log(`[Matchmaking] ${data.length} parceiros carregados`);
+}).catch(err => console.warn('[Matchmaking] Falha ao carregar parceiros:', err));
+
+function findParceiros(estado, cidade, equipamento) {
+  if (!parceirosDB.length) return { exact: [], stateMatch: [], total: 0 };
+
+  const estadoUp = (estado || '').toUpperCase();
+  const cidadeUp = (cidade || '').toUpperCase().trim();
+  const equipUp = (equipamento || '').toUpperCase().trim();
+
+  // Função para verificar se o parceiro tem o equipamento
+  function hasEquip(p) {
+    return p.e.some(eq => {
+      const eqUp = eq.toUpperCase();
+      // Match flexível: "ULTRAPULSE ALPHA" encontra "ULTRAPULSE" e vice-versa
+      return eqUp.includes(equipUp) || equipUp.includes(eqUp) ||
+        // Match por palavra-chave principal (ex: "HIPRO" em "HIPRO MED")
+        equipUp.split(' ').some(word => word.length > 3 && eqUp.includes(word)) ||
+        eqUp.split(' ').some(word => word.length > 3 && equipUp.includes(word));
+    });
+  }
+
+  // 1) Mesma cidade + mesmo equipamento (match perfeito)
+  const exact = parceirosDB.filter(p =>
+    p.s === estadoUp &&
+    p.c.toUpperCase() === cidadeUp &&
+    p.t === 'clinica' &&
+    hasEquip(p)
+  );
+
+  // 2) Mesmo estado + mesmo equipamento (outras cidades)
+  const stateMatch = parceirosDB.filter(p =>
+    p.s === estadoUp &&
+    p.c.toUpperCase() !== cidadeUp &&
+    p.t === 'clinica' &&
+    hasEquip(p)
+  );
+
+  // Total com o equipamento no estado
+  const totalEquipEstado = parceirosDB.filter(p =>
+    p.s === estadoUp && p.t === 'clinica' && hasEquip(p)
+  ).length;
+
+  return { exact, stateMatch: stateMatch.slice(0, 5), total: totalEquipEstado };
+}
+
+function getCidadesByEstado(estado) {
+  if (!parceirosDB.length) return [];
+  const estadoUp = (estado || '').toUpperCase();
+  const cidades = new Set();
+  parceirosDB.forEach(p => {
+    if (p.s === estadoUp) cidades.add(p.c);
+  });
+  return [...cidades].sort();
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  CONFIGURACAO DAS MARCAS (com copy ECHO + dados SAGE)   ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const BRANDS = {
+  contourline: {
+    name: "Contourline",
+    tagline: "Tecnologia em Estetica Corporal e Facial",
+    headline: "Descubra a tecnologia que transforma resultados na estética",
+    socialProof: "Mais de <strong>2.000 profissionais</strong> ja confiam na Contourline",
+    logo: "Logos/LOGO PERFIL CONTOURLINE.png",
+    profissionais: [
+      { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+      { label: "Biomédico(a) Esteta", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Biomedico Esteta" },
+      { label: "Esteticista", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Esteticista" },
+      { label: "Fisioterapeuta Dermatofuncional", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Tecnólogo(a) em Estética", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Tecnologo em Estetica" },
+      { label: "Dono(a) de Clínica / Spa", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE CLINICA" }    ],
+    especialidades: [
+      { label: "Cirurgia Plastica", perfil: "MEDICO - Cirurgiao Plastico" },
+      { label: "Dermatologia", perfil: "MEDICO - Dermatologista" },
+      { label: "Medicina Estetica", perfil: "MEDICO - Medico Estetico" },
+      { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  contourline_med: {
+    name: "Contourline Med",
+    tagline: "Tecnologia Medica de Alta Performance",
+    headline: "Equipamentos médicos que elevam o padrão da sua clínica",
+    socialProof: "Referência em tecnologia médica no Brasil com <strong>+500 clínicas</strong>",
+    logo: "Logos/contourline med - perfil.png",
+    profissionais: [
+      { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+      { label: "Dono(a) de Clínica", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE CLINICA" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plastica", perfil: "MEDICO - Cirurgiao Plastico" },
+      { label: "Dermatologia", perfil: "MEDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MEDICO - Ginecologista" },
+      { label: "Medicina Estetica", perfil: "MEDICO - Medico Estetico" },
+      { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  lumenis: {
+    name: "Lumenis",
+    tagline: "Lider Mundial em Tecnologias Medicas de Energia",
+    headline: "A marca mais premiada do mundo em laser e energia agora no seu consultório",
+    socialProof: "Presente em <strong>+100 países</strong> — líder global em lasers médicos",
+    logo: "Logos/Lumenis_RGB_Logo_White-fundo.png",
+    profissionais: [
+      { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+      { label: "Dono(a) de Clínica", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE CLINICA" }
+    ],
+    especialidades: [
+      { label: "Cirurgia Plastica", perfil: "MEDICO - Cirurgiao Plastico" },
+      { label: "Dermatologia", perfil: "MEDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MEDICO - Ginecologista" },
+      { label: "Medicina Estetica", perfil: "MEDICO - Medico Estetico" },
+      { label: "Oftalmologia", perfil: "MEDICO - Oftalmologista" },
+      { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  bodyhealth: {
+    name: "Body Health",
+    tagline: "Tecnologia e Inovacao em Saude e Estetica",
+    headline: "Equipamentos inteligentes para tratamentos que fazem diferença",
+    socialProof: "Marca que mais cresce no segmento — <strong>+800 unidades</strong> vendidas",
+    logo: "Logos/PERFIL_BODY HEALTH.png",
+    profissionais: [
+      { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+      { label: "Biomédico(a) / Esteticista", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Esteticista" },
+      { label: "Fisioterapeuta", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Dono(a) de Clínica / Spa", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE CLINICA" }    ],
+    especialidades: [
+      { label: "Cirurgia Plastica", perfil: "MEDICO - Cirurgiao Plastico" },
+      { label: "Dermatologia", perfil: "MEDICO - Dermatologista" },
+      { label: "Ginecologia", perfil: "MEDICO - Ginecologista" },
+      { label: "Medicina Estetica", perfil: "MEDICO - Medico Estetico" },
+      { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer tratamento" }
+    ]
+  },
+
+  visbody: {
+    name: "Visbody Brasil",
+    tagline: "Scanner Corporal 3D com IA",
+    headline: "Diagnostico corporal completo em 10 segundos — o futuro ja chegou",
+    socialProof: "Tecnologia usada em <strong>+60 países</strong> por profissionais de elite",
+    logo: "Logos/VISBODY BRANCA - perfil.png",
+    profissionais: [
+      { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+      { label: "Fisioterapeuta / Biomédico(a)", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+      { label: "Nutricionista", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Nutricionista" },
+      { label: "Personal Trainer / Educador Físico", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Personal Trainer" },
+      { label: "Dono de Academia / Spa", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE ACADEMIA" }    ],
+    especialidades: [
+      { label: "Medicina Esportiva", perfil: "MEDICO - Medicina Esportiva" },
+      { label: "Endocrinologia", perfil: "MEDICO - Endocrinologista" },
+      { label: "Nutrologia", perfil: "MEDICO - Nutrologo" },
+      { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+    ],
+    negocios: [
+      { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+      { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+    ],
+    cliente: [
+      { label: "Quero fazer uma avaliação", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer avaliacao" }
+    ]
+  }
+};
+
+// Alias: contourlinemed → contourline_med (para UTMs sem underscore)
+BRANDS.contourlinemed = BRANDS.contourline_med;
+
+// Fallback generico
+const FALLBACK_BRAND = {
+  name: "Contourline Group",
+  tagline: "Tecnologia em Saude e Estetica",
+  headline: "A tecnologia certa para transformar sua pratica profissional",
+  socialProof: "Grupo lider com <strong>5 marcas</strong> e presenca nacional",
+  logo: "Logos/LOGO PERFIL CONTOURLINE.png",
+  profissionais: [
+    { label: "Médico(a)", tag: "MEDICO", medico: "SIM", perfil: "MEDICO", hasSub: true },
+    { label: "Biomédico(a) Esteta", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Biomedico Esteta" },
+    { label: "Esteticista", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Esteticista" },
+    { label: "Fisioterapeuta", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Fisioterapeuta" },
+    { label: "Nutricionista", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Nutricionista" },
+    { label: "Personal Trainer", tag: "PROFISSIONAL", medico: "NAO", perfil: "PROFISSIONAL - Personal Trainer" },
+    { label: "Dono(a) de Clínica / Spa / Academia", tag: "EMPRESARIO", medico: "NAO", perfil: "EMPRESARIO / DONO DE CLINICA" }
+  ],
+  especialidades: [
+    { label: "Cirurgia Plastica", perfil: "MEDICO - Cirurgiao Plastico" },
+    { label: "Dermatologia", perfil: "MEDICO - Dermatologista" },
+    { label: "Ginecologia", perfil: "MEDICO - Ginecologista" },
+    { label: "Medicina Estetica", perfil: "MEDICO - Medico Estetico" },
+    { label: "Outra especialidade", perfil: "MEDICO - Outro" }
+  ],
+  negocios: [
+    { label: "Empresário(a) / Investidor(a)", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" },
+    { label: "Empresa de Locação", tag: "INVESTIDOR", medico: "NAO", perfil: "INVESTIDOR / LOCADORA" }
+  ],
+  cliente: [
+    { label: "Quero fazer um tratamento", tag: "CLIENTE FINAL", medico: "NAO", perfil: "CLIENTE FINAL - Quer tratamento" }
+  ]
+};
+
+// ✍️ ECHO: Copy "como conheceu" mais natural
+const SOURCE_OPTIONS = [
+  { label: "Já vi uma demonstração ao vivo", value: "Já vi uma demonstração", demo: true, sourceText: "Já vi uma demonstração ao vivo e quero saber mais!" },
+  { label: "Descobri pelas redes sociais", value: "Vi nas redes sociais", demo: false, sourceText: "Vi nas redes sociais e tenho interesse!" },
+  { label: "Um colega me indicou", value: "Indicação de colega", demo: false, sourceText: "Um colega me indicou e gostaria de saber mais!" },
+  { label: "Conheci em congresso ou evento", value: "Congresso / Evento", demo: false, sourceText: "Conheci em um congresso/evento e quero mais informações!" },
+  { label: "É a primeira vez que vejo", value: "Primeira vez que vejo", demo: false, sourceText: "Vi pela primeira vez e gostaria de conhecer melhor!" }
+];
+
+// Mapeamento UTM source → deal_source_id
+const SOURCE_MAP = {
+  facebook:  "6942e989612fc60001add9cc",
+  fb:        "6942e989612fc60001add9cc",
+  instagram: "693b662b09b5cf00017b9f60",
+  ig:        "693b662b09b5cf00017b9f60",
+  google:    "691e674c26a19d00017f490d"
+};
+const DEFAULT_SOURCE = "68767b92ac9e99000130e3eb";
+
+// Mapeamento UTM term → EQUIPAMENTO RD Station
+const EQUIP_MAP = {
+  "stellar": "STELLAR", "stellar_m22": "STELLAR", "stellarm22": "STELLAR",
+  "trilift": "TRILIFT",
+  "ultrapulse": "ULTRAPULSE ALPHA", "ultrapulse_alpha": "ULTRAPULSE ALPHA",
+  "nuera": "NUERA TIGHT 2.0", "nuera_tight": "NUERA TIGHT 2.0", "nueratight": "NUERA TIGHT 2.0",
+  "splendor": "SPLENDOR X 2.0", "splendor_x": "SPLENDOR X 2.0",
+  "folix": "FOLIX",
+  "hipro": "HIPRO", "multishape": "MULTISHAPE",
+  "xtonus": "X-TONUS MAN INDIVIDUAIS", "x_tonus": "X-TONUS MAN INDIVIDUAIS",
+  "focuskin": "FOCUSKIN", "hivepro": "HIVE PRO", "hive_pro": "HIVE PRO",
+  "ultralift": "ULTRALIFT", "reverso": "REVERSO",
+  "hipro_med": "HIPRO MED", "hipromed": "HIPRO MED",
+  "supreme_pro": "SUPREME PRO", "supremepro": "SUPREME PRO",
+  "crystal": "LASER CRYSTAL 3D PLUS", "crystal_3d": "LASER CRYSTAL 3D PLUS",
+  "enygma": "ENYGMA", "unyque": "UNYQUE PRO", "unyque_pro": "UNYQUE PRO",
+  "iconyc": "ICONYC",
+  "s30": "S30", "s_30": "S30", "m30": "M30", "m_30": "M30",
+  "creator600": "CREATOR 600", "creator_600": "CREATOR 600"
+};
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ESTADO DO FORMULARIO                                   ║
+// ╚══════════════════════════════════════════════════════════╝
+
+let currentStep = 1;
+let selectedProfile = null;
+let selectedSpecialty = null;
+let selectedSource = null;
+let selectedEstado = null;
+let selectedCidade = null;
+let activeBrand = null;
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ESTADOS E CIDADES DO BRASIL                            ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const ESTADOS = [
+  {sigla:"AC",label:"Acre"},{sigla:"AL",label:"Alagoas"},{sigla:"AP",label:"Amapa"},
+  {sigla:"AM",label:"Amazonas"},{sigla:"BA",label:"Bahia"},{sigla:"CE",label:"Ceara"},
+  {sigla:"DF",label:"Distrito Federal"},{sigla:"ES",label:"Espirito Santo"},{sigla:"GO",label:"Goias"},
+  {sigla:"MA",label:"Maranhao"},{sigla:"MT",label:"Mato Grosso"},{sigla:"MS",label:"Mato Grosso do Sul"},
+  {sigla:"MG",label:"Minas Gerais"},{sigla:"PA",label:"Para"},{sigla:"PB",label:"Paraiba"},
+  {sigla:"PR",label:"Parana"},{sigla:"PE",label:"Pernambuco"},{sigla:"PI",label:"Piaui"},
+  {sigla:"RJ",label:"Rio de Janeiro"},{sigla:"RN",label:"Rio Grande do Norte"},
+  {sigla:"RS",label:"Rio Grande do Sul"},{sigla:"RO",label:"Rondonia"},{sigla:"RR",label:"Roraima"},
+  {sigla:"SC",label:"Santa Catarina"},{sigla:"SP",label:"Sao Paulo"},{sigla:"SE",label:"Sergipe"},
+  {sigla:"TO",label:"Tocantins"}
+];
+
+const CIDADES = {
+  AC:["Rio Branco","Cruzeiro do Sul","Sena Madureira","Tarauaca"],
+  AL:["Maceio","Arapiraca","Rio Largo","Palmeira dos Indios","Penedo"],
+  AP:["Macapa","Santana","Laranjal do Jari","Oiapoque"],
+  AM:["Manaus","Parintins","Itacoatiara","Manacapuru","Coari"],
+  BA:["Salvador","Feira de Santana","Vitoria da Conquista","Camacari","Itabuna","Lauro de Freitas","Ilheus"],
+  CE:["Fortaleza","Caucaia","Juazeiro do Norte","Maracanau","Sobral"],
+  DF:["Brasilia","Taguatinga","Ceilandia","Samambaia","Plano Piloto","Aguas Claras"],
+  ES:["Vitoria","Vila Velha","Serra","Cariacica","Cachoeiro de Itapemirim","Linhares"],
+  GO:["Goiania","Aparecida de Goiania","Anapolis","Rio Verde","Luziania"],
+  MA:["Sao Luis","Imperatriz","Sao Jose de Ribamar","Timon","Caxias"],
+  MT:["Cuiaba","Varzea Grande","Rondonopolis","Sinop","Tangara da Serra"],
+  MS:["Campo Grande","Dourados","Tres Lagoas","Corumba","Ponta Pora"],
+  MG:["Belo Horizonte","Uberlandia","Contagem","Juiz de Fora","Betim","Montes Claros","Ribeirao das Neves","Uberaba","Governador Valadares","Ipatinga"],
+  PA:["Belem","Ananindeua","Santarem","Maraba","Castanhal"],
+  PB:["Joao Pessoa","Campina Grande","Santa Rita","Patos","Bayeux"],
+  PR:["Curitiba","Londrina","Maringa","Ponta Grossa","Cascavel","Foz do Iguacu","Sao Jose dos Pinhais"],
+  PE:["Recife","Jaboatao dos Guararapes","Olinda","Caruaru","Petrolina","Paulista"],
+  PI:["Teresina","Parnaiba","Picos","Floriano"],
+  RJ:["Rio de Janeiro","Niteroi","Sao Goncalo","Duque de Caxias","Nova Iguacu","Petropolis","Campos dos Goytacazes","Volta Redonda","Barra Mansa"],
+  RN:["Natal","Mossoro","Parnamirim","Sao Goncalo do Amarante","Caico"],
+  RS:["Porto Alegre","Caxias do Sul","Canoas","Pelotas","Santa Maria","Gravataí","Novo Hamburgo"],
+  RO:["Porto Velho","Ji-Parana","Vilhena","Ariquemes","Cacoal"],
+  RR:["Boa Vista","Rorainopolis","Caracarai"],
+  SC:["Florianopolis","Joinville","Blumenau","Chapeco","Itajai","Criciuma","Balneario Camboriu"],
+  SP:["Sao Paulo","Campinas","Guarulhos","Sao Bernardo do Campo","Santo Andre","Osasco","Sorocaba","Ribeirao Preto","Santos","Sao Jose dos Campos","Bauru","Jundiai","Piracicaba"],
+  SE:["Aracaju","Nossa Senhora do Socorro","Lagarto","Itabaiana"],
+  TO:["Palmas","Araguaina","Gurupi","Porto Nacional"]
+};
+
+// UTM params
+const params = new URLSearchParams(window.location.search);
+const utm = {
+  brand:    (params.get('utm_brand') || '').toLowerCase().replace(/[\s-]/g, '_'),
+  source:   (params.get('utm_source') || '').toLowerCase(),
+  medium:   (params.get('utm_medium') || '').toLowerCase(),
+  campaign: params.get('utm_campaign') || '',
+  term:     params.get('utm_term') || '',
+  content:  params.get('utm_content') || ''
+};
+
+// 📊 SAGE: Funnel Tracking
+const funnelEvents = {
+  started: false,
+  step1_completed: false,
+  step2_completed: false,
+  submitted: false,
+  whatsapp_clicked: false
+};
+
+function trackEvent(eventName, data = {}) {
+  funnelEvents[eventName] = true;
+  const payload = {
+    event: eventName,
+    brand: activeBrand?.name || 'unknown',
+    utm_source: utm.source,
+    utm_campaign: utm.campaign,
+    utm_term: utm.term,
+    timestamp: new Date().toISOString(),
+    ...data
+  };
+
+  // Facebook Pixel (se disponivel)
+  if (typeof fbq === 'function') {
+    if (eventName === 'form_start') fbq('track', 'ViewContent', { content_name: payload.brand });
+    if (eventName === 'form_step2') fbq('track', 'InitiateCheckout');
+    if (eventName === 'form_submit') fbq('track', 'Lead', { content_name: payload.brand });
+  }
+
+  // Google Analytics (se disponivel)
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, payload);
+  }
+
+  // Google Ads Conversion (dispara no submit do formulario)
+  if (typeof gtag === 'function' && eventName === 'form_submit') {
+    gtag('event', 'conversion', {'send_to': 'AW-993310353/8C9tCM6j7u0bEJHt0tkD'});
+  }
+
+  // Console para debug
+  console.log('[FUNNEL]', eventName, payload);
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  CATALOGO DE EQUIPAMENTOS (fallback quando UTM falha)   ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const EQUIPMENT_CATALOG = {
+  contourline: [
+    { label: "HIPRO", equip: "HIPRO", brand: "contourline" },
+    { label: "MULTISHAPE", equip: "MULTISHAPE", brand: "contourline" },
+    { label: "X-TONUS", equip: "X-TONUS MAN INDIVIDUAIS", brand: "contourline" },
+    { label: "FOCUSKIN", equip: "FOCUSKIN", brand: "contourline" },
+    { label: "HIVE PRO", equip: "HIVE PRO", brand: "contourline" },
+    { label: "ULTRALIFT", equip: "ULTRALIFT", brand: "contourline" },
+    { label: "REVERSO", equip: "REVERSO", brand: "contourline" },
+    { label: "FOLIX", equip: "FOLIX", brand: "contourline" }
+  ],
+  med: [
+    { label: "HIPRO MED", equip: "HIPRO MED", brand: "contourline_med" },
+    { label: "SUPREME PRO", equip: "SUPREME PRO", brand: "contourline_med" }
+  ],
+  lumenis: [
+    { label: "STELLAR M22", equip: "STELLAR", brand: "lumenis" },
+    { label: "ULTRAPULSE ALPHA", equip: "ULTRAPULSE ALPHA", brand: "lumenis" },
+    { label: "NUERA TIGHT 2.0", equip: "NUERA TIGHT 2.0", brand: "lumenis" },
+    { label: "SPLENDOR X 2.0", equip: "SPLENDOR X 2.0", brand: "lumenis" },
+    { label: "TRILIFT", equip: "TRILIFT", brand: "lumenis" }
+  ],
+  bodyhealth: [
+    { label: "CRYSTAL 3D PLUS", equip: "LASER CRYSTAL 3D PLUS", brand: "bodyhealth" },
+    { label: "ENYGMA", equip: "ENYGMA", brand: "bodyhealth" },
+    { label: "UNYQUE PRO", equip: "UNYQUE PRO", brand: "bodyhealth" },
+    { label: "ICONYC", equip: "ICONYC", brand: "bodyhealth" }
+  ],
+  visbody: [
+    { label: "VISBODY S30", equip: "S30", brand: "visbody" },
+    { label: "VISBODY M30", equip: "M30", brand: "visbody" },
+    { label: "CREATOR 600", equip: "CREATOR 600", brand: "visbody" }
+  ]
+};
+
+let isFallbackMode = false;
+let selectedEquipment = null;
+
+function initStep0() {
+  isFallbackMode = true;
+  document.getElementById('step0').classList.add('active');
+  document.getElementById('progressLabel').textContent = 'Etapa 1 de 4';
+
+  // Renderizar cada grupo
+  renderEquipOptions('equipContourline', EQUIPMENT_CATALOG.contourline);
+  renderEquipOptions('equipMed', EQUIPMENT_CATALOG.med);
+  renderEquipOptions('equipLumenis', EQUIPMENT_CATALOG.lumenis);
+  renderEquipOptions('equipBodyHealth', EQUIPMENT_CATALOG.bodyhealth);
+  renderEquipOptions('equipVisbody', EQUIPMENT_CATALOG.visbody);
+
+  // Opção "não sei ainda"
+  const naoSeiContainer = document.getElementById('equipNaoSei');
+  const div = document.createElement('div');
+  div.className = 'option';
+  div.dataset.group = 'equip';
+  div.innerHTML = '<span class="option-label">Ainda não sei / Quero conhecer</span><span class="option-radio"></span>';
+  div.addEventListener('click', (e) => {
+    document.querySelectorAll('.option[data-group="equip"]').forEach(el => el.classList.remove('selected'));
+    div.classList.add('selected');
+    selectedEquipment = { label: 'Nao definido', equip: '', brand: '' };
+    // Manter fallback brand, avançar pro step 1
+    setTimeout(() => {
+      document.getElementById('step0').classList.remove('active');
+      document.getElementById('step1').classList.add('active');
+      updateProgressForFallback(2);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
+  });
+  naoSeiContainer.appendChild(div);
+}
+
+function renderEquipOptions(containerId, equipments) {
+  const container = document.getElementById(containerId);
+  equipments.forEach(eq => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = 'equip';
+    div.innerHTML = `<span class="option-label">${eq.label}</span><span class="option-radio"></span>`;
+    div.addEventListener('click', (e) => {
+      document.querySelectorAll('.option[data-group="equip"]').forEach(el => el.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedEquipment = eq;
+
+      // Trocar a marca ativa com base no equipamento selecionado
+      if (eq.brand && BRANDS[eq.brand]) {
+        activeBrand = BRANDS[eq.brand];
+        const brandKey = eq.brand;
+        document.getElementById('formContainer').setAttribute('data-brand', brandKey);
+        document.getElementById('brandLogo').src = activeBrand.logo;
+        document.getElementById('brandName').textContent = activeBrand.name;
+        document.getElementById('brandTagline').textContent = activeBrand.tagline;
+        document.getElementById('brandHeadline').textContent = activeBrand.headline || '';
+        document.getElementById('socialProofText').innerHTML = activeBrand.socialProof || '';
+        document.title = activeBrand.name + ' — Fale no WhatsApp';
+
+        // Re-renderizar perfis da marca selecionada
+        document.getElementById('profilesProfissionais').innerHTML = '';
+        document.getElementById('profilesNegocios').innerHTML = '';
+        document.getElementById('profilesCliente').innerHTML = '';
+        document.getElementById('specialtyOptions').innerHTML = '';
+        renderOptions('profilesProfissionais', activeBrand.profissionais, 'profile');
+        renderOptions('profilesNegocios', activeBrand.negocios, 'profile');
+        renderOptions('profilesCliente', activeBrand.cliente, 'profile');
+        if (activeBrand.especialidades) {
+          renderOptions('specialtyOptions', activeBrand.especialidades, 'specialty');
+        }
+      }
+
+      // Avançar pro step 1
+      setTimeout(() => {
+        document.getElementById('step0').classList.remove('active');
+        document.getElementById('step1').classList.add('active');
+        updateProgressForFallback(2);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+    });
+    container.appendChild(div);
+  });
+}
+
+function updateProgressForFallback(currentFallbackStep) {
+  // No fallback mode temos 4 etapas: equip, perfil, dados, fonte
+  const pct = Math.round(((currentFallbackStep - 1) / 4) * 100);
+  document.getElementById('progressLabel').textContent = `Etapa ${currentFallbackStep} de 4`;
+  document.getElementById('progressPercent').textContent = pct + '%';
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  INICIALIZACAO                                          ║
+// ╚══════════════════════════════════════════════════════════╝
+
+function initParticles() {
+  const BRAND_GLOW = {
+    contourline: '#1a8a9e', contourline_med: '#1565c0',
+    lumenis: '#c89b5c', bodyhealth: '#bb9299', visbody: '#00d4ff'
+  };
+  const brandKey = utm.brand || 'contourline';
+  const glowColor = BRAND_GLOW[brandKey] || '#00b4d8';
+
+  // Set glow orb colors
+  const orbs = document.querySelectorAll('.glow-orb');
+  orbs.forEach((orb, i) => {
+    const r = parseInt(glowColor.slice(1,3),16);
+    const g = parseInt(glowColor.slice(3,5),16);
+    const b = parseInt(glowColor.slice(5,7),16);
+    const shift = (i - 1) * 20;
+    orb.style.background = 'rgba(' + Math.min(255,r+shift) + ',' + Math.min(255,g+shift) + ',' + Math.min(255,b+shift) + ',0.3)';
+  });
+
+  // Create floating particles
+  const layer = document.getElementById('particlesLayer');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = (1 + Math.random() * 2.5) + 'px';
+    p.style.height = p.style.width;
+    layer.appendChild(p);
+  }
+}
+
+function init() {
+  // Init cinematic particles
+  initParticles();
+
+  // Detectar marca pela UTM
+  const hasBrand = utm.brand && BRANDS[utm.brand];
+  activeBrand = hasBrand ? BRANDS[utm.brand] : FALLBACK_BRAND;
+
+  // Aplicar tema de cor por marca
+  const brandKey = utm.brand || 'contourline';
+  document.getElementById('formContainer').setAttribute('data-brand', brandKey);
+
+  // Header
+  document.getElementById('brandLogo').src = activeBrand.logo;
+  document.getElementById('brandLogo').alt = activeBrand.name;
+  document.getElementById('brandName').textContent = activeBrand.name;
+  document.getElementById('brandTagline').textContent = activeBrand.tagline;
+  document.getElementById('brandHeadline').textContent = activeBrand.headline || '';
+
+  // Social Proof
+  document.getElementById('socialProofText').innerHTML = activeBrand.socialProof || '';
+
+  // Titulo da pagina
+  document.title = activeBrand.name + ' — Fale no WhatsApp';
+
+  // Se UTM não trouxe marca válida → mostrar step 0 (seletor de equipamento)
+  if (!hasBrand) {
+    initStep0();
+  } else {
+    // Marca válida: ir direto pro step 1
+    document.getElementById('step1').classList.add('active');
+  }
+
+  // Renderizar perfis
+  renderOptions('profilesProfissionais', activeBrand.profissionais, 'profile');
+  renderOptions('profilesNegocios', activeBrand.negocios, 'profile');
+  renderOptions('profilesCliente', activeBrand.cliente, 'profile');
+
+  // Renderizar especialidades
+  if (activeBrand.especialidades) {
+    renderOptions('specialtyOptions', activeBrand.especialidades, 'specialty');
+  }
+
+  // Renderizar estados (step 3)
+  renderEstados();
+
+  // Renderizar fontes (step 4)
+  renderSourceOptions();
+
+  // Validacao dos inputs do step 2
+  ['inputNome', 'inputTelefone', 'inputEmail', 'inputInstagram'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', validateStep2);
+    el.addEventListener('focus', () => {
+      if (id === 'inputTelefone') {
+        document.getElementById('hintTelefone').classList.add('visible');
+      }
+    });
+    el.addEventListener('blur', () => {
+      // Inline validation feedback
+      validateFieldVisual(el);
+    });
+  });
+
+  // Mascara de telefone
+  document.getElementById('inputTelefone').addEventListener('input', maskPhone);
+
+  // Bloquear caracteres especiais no nome em tempo real
+  document.getElementById('inputNome').addEventListener('input', function() {
+    this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s\-']/g, '');
+  });
+
+  // Estado/Cidade — autocomplete e validação
+  // Localização removida — sem matchmaking
+
+  // Track form start
+  trackEvent('form_start');
+}
+
+// Regex: apenas letras (incluindo acentos), espaços e hifens
+const NOME_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$/;
+// Regex: email rigoroso
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+// Regex: cidade valida (letras, acentos, espaços, hifens, apóstrofos)
+const CIDADE_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ\s\-'\.]+$/;
+
+function isValidNome(value) {
+  return value.length >= 3 && NOME_REGEX.test(value) && value.includes(' ');
+}
+
+function isValidEmail(value) {
+  return EMAIL_REGEX.test(value);
+}
+
+function isValidCidade(value) {
+  return value.length >= 3 && CIDADE_REGEX.test(value);
+}
+
+function validateFieldVisual(el) {
+  const value = el.value.trim();
+  if (!value) {
+    el.classList.remove('valid', 'invalid');
+    return;
+  }
+  if (el.id === 'inputNome') {
+    // Bloquear caracteres especiais em tempo real
+    el.value = el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s\-']/g, '');
+    const cleaned = el.value.trim();
+    el.classList.toggle('valid', isValidNome(cleaned));
+    el.classList.toggle('invalid', cleaned.length > 2 && !isValidNome(cleaned));
+  }
+  if (el.id === 'inputTelefone') {
+    const digits = value.replace(/\D/g, '');
+    el.classList.toggle('valid', digits.length >= 10);
+    el.classList.toggle('invalid', digits.length > 0 && digits.length < 10);
+  }
+  if (el.id === 'inputEmail') {
+    if (value.length === 0) {
+      el.classList.remove('valid', 'invalid');
+    } else {
+      el.classList.toggle('valid', isValidEmail(value));
+      el.classList.toggle('invalid', value.length > 5 && !isValidEmail(value));
+    }
+  }
+}
+
+function renderOptions(containerId, options, group) {
+  const container = document.getElementById(containerId);
+  options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = group;
+    div.dataset.index = i;
+    div.innerHTML = `
+      <span class="option-label">${opt.label}</span>
+      <span class="option-radio"></span>
+    `;
+    div.addEventListener('click', (e) => {
+      // Ripple position
+      const rect = div.getBoundingClientRect();
+      div.style.setProperty('--ripple-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      div.style.setProperty('--ripple-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+      selectOption(div, group, opt);
+    });
+    container.appendChild(div);
+  });
+}
+
+function renderSourceOptions() {
+  const container = document.getElementById('sourceOptions');
+  SOURCE_OPTIONS.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = 'source';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <span class="option-label">${opt.label}</span>
+      <span class="option-radio"></span>
+    `;
+    div.addEventListener('click', (e) => {
+      const rect = div.getBoundingClientRect();
+      div.style.setProperty('--ripple-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      div.style.setProperty('--ripple-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+      selectOption(div, 'source', opt);
+    });
+    container.appendChild(div);
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  INTERACOES                                             ║
+// ╚══════════════════════════════════════════════════════════╝
+
+function selectOption(element, group, data) {
+  document.querySelectorAll(`.option[data-group="${group}"]`).forEach(el => {
+    el.classList.remove('selected');
+  });
+  element.classList.add('selected');
+
+  if (group === 'profile') {
+    selectedProfile = data;
+    selectedSpecialty = null;
+    const specSection = document.getElementById('specialtySection');
+
+    if (data.hasSub && activeBrand.especialidades) {
+      // Médico: esconder tudo e mostrar só especialidades
+      specSection.style.display = 'block';
+      document.getElementById('otherProfilesSection').style.display = 'none';
+      document.getElementById('profilesProfissionais').style.display = 'none';
+      document.querySelector('#step1 .group-label').style.display = 'none';
+      // Atualizar titulo para contexto de especialidade
+      document.getElementById('step1Title').textContent = 'Qual sua especialidade?';
+      document.getElementById('step1Subtitle').textContent = 'Selecione a área que você atua';
+      document.querySelectorAll('.option[data-group="specialty"]').forEach(el => {
+        el.classList.remove('selected');
+      });
+      document.getElementById('btnStep1').style.display = 'none';
+      document.getElementById('customSpecialtyField').style.display = 'none';
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+    } else {
+      // Qualquer outro perfil: auto-avança para Step 2
+      specSection.style.display = 'none';
+      document.getElementById('customProfileSection').style.display = 'none';
+      document.getElementById('btnStep1').disabled = false;
+      trackEvent('profile_selected', { profile: data.tag });
+      // Auto-avançar após 300ms (tempo para o usuário ver a seleção)
+      setTimeout(() => goToStep(2), 300);
+      return;
+    }
+
+    trackEvent('profile_selected', { profile: data.tag });
+
+  } else if (group === 'specialty') {
+    selectedSpecialty = data;
+    const customField = document.getElementById('customSpecialtyField');
+    const customInput = document.getElementById('inputCustomSpecialty');
+
+    if (data.perfil.includes('Outro')) {
+      // "Outra especialidade": mostrar só o campo de texto, esconder tudo acima
+      document.getElementById('specialtyOptions').style.display = 'none';
+      customField.style.display = 'block';
+      document.getElementById('step1Title').textContent = 'Digite sua especialidade';
+      document.getElementById('step1Subtitle').textContent = '';
+      document.getElementById('btnStep1').style.display = 'block';
+      document.getElementById('btnStep1').disabled = customInput.value.trim().length < 2;
+      setTimeout(() => customInput.focus(), 100);
+      customInput.oninput = () => {
+        const val = customInput.value.trim();
+        document.getElementById('btnStep1').disabled = val.length < 2;
+        if (val.length >= 2) {
+          selectedProfile = { ...selectedProfile, perfil: 'MEDICO - ' + val };
+        }
+      };
+    } else {
+      // Especialidade normal: auto-avança para Step 2
+      customField.style.display = 'none';
+      customInput.value = '';
+      selectedProfile = { ...selectedProfile, perfil: data.perfil };
+      document.getElementById('btnStep1').disabled = false;
+      // Auto-avançar após 300ms
+      setTimeout(() => goToStep(2), 300);
+      return;
+    }
+
+  } else if (group === 'source') {
+    selectedSource = data;
+    document.getElementById('btnSubmit').disabled = false;
+    // Auto-enviar após 300ms
+    setTimeout(() => submitForm(), 300);
+    return;
+  }
+}
+
+// Voltar para a lista de perfis (sair das especialidades)
+function resetToProfiles() {
+  selectedProfile = null;
+  selectedSpecialty = null;
+  document.getElementById('specialtySection').style.display = 'none';
+  document.getElementById('specialtyOptions').style.display = 'flex';
+  document.getElementById('otherProfilesSection').style.display = 'block';
+  document.getElementById('profilesProfissionais').style.display = 'flex';
+  document.querySelector('#step1 .group-label').style.display = 'block';
+  document.querySelectorAll('#profilesProfissionais .option').forEach(el => {
+    el.style.display = 'flex';
+    el.classList.remove('selected');
+  });
+  document.querySelectorAll('.option[data-group="specialty"]').forEach(el => {
+    el.classList.remove('selected');
+  });
+  document.getElementById('customSpecialtyField').style.display = 'none';
+  document.getElementById('customProfileSection').style.display = 'none';
+  document.getElementById('step1Title').textContent = 'Qual o seu perfil?';
+  document.getElementById('step1Subtitle').textContent = 'Assim podemos personalizar o atendimento para você';
+  document.getElementById('btnStep1').style.display = 'block';
+  document.getElementById('btnStep1').disabled = true;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ESTADO + CIDADE                                        ║
+// ╚══════════════════════════════════════════════════════════╝
+
+function renderEstados() {
+  const container = document.getElementById('estadoOptions');
+  container.innerHTML = '';
+  ESTADOS.forEach(est => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = 'estado';
+    div.dataset.sigla = est.sigla;
+    div.innerHTML = `<span class="option-label" style="font-size:13px;">${est.sigla}</span>`;
+    div.addEventListener('click', () => selectEstado(div, est));
+    container.appendChild(div);
+  });
+}
+
+function filterEstados() {
+  const query = document.getElementById('inputBuscaEstado').value.toLowerCase();
+  document.querySelectorAll('.option[data-group="estado"]').forEach(el => {
+    const sigla = el.dataset.sigla.toLowerCase();
+    const est = ESTADOS.find(e => e.sigla === el.dataset.sigla);
+    const match = sigla.includes(query) || (est && est.label.toLowerCase().includes(query));
+    el.style.display = match ? 'flex' : 'none';
+  });
+}
+
+function selectEstado(el, est) {
+  document.querySelectorAll('.option[data-group="estado"]').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedEstado = est;
+  selectedCidade = null;
+
+  // Mostrar cidades
+  const section = document.getElementById('cidadeSection');
+  section.style.display = 'block';
+  document.getElementById('step3Title').textContent = 'E a cidade?';
+  document.getElementById('step3Subtitle').textContent = est.label + ' selecionado';
+  document.getElementById('inputBuscaEstado').style.display = 'none';
+  document.getElementById('estadoOptions').style.display = 'none';
+
+  renderCidades(est.sigla);
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function renderCidades(sigla) {
+  const container = document.getElementById('cidadeOptions');
+  container.innerHTML = '';
+  const cidades = CIDADES[sigla] || [];
+
+  cidades.forEach(cidade => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.dataset.group = 'cidade';
+    div.innerHTML = `<span class="option-label" style="font-size:13px;">${cidade}</span>`;
+    div.addEventListener('click', () => {
+      document.querySelectorAll('.option[data-group="cidade"]').forEach(o => o.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedCidade = cidade;
+      setTimeout(() => goToStep(4), 300);
+    });
+    container.appendChild(div);
+  });
+
+  // Opcao "Outra cidade"
+  const outraDiv = document.createElement('div');
+  outraDiv.className = 'option';
+  outraDiv.dataset.group = 'cidade';
+  outraDiv.innerHTML = '<span class="option-label" style="font-size:13px;">Outra cidade</span>';
+  outraDiv.addEventListener('click', () => {
+    document.querySelectorAll('.option[data-group="cidade"]').forEach(o => o.classList.remove('selected'));
+    outraDiv.classList.add('selected');
+    // Mostrar campo de texto
+    let inputOutra = document.getElementById('inputOutraCidade');
+    if (!inputOutra) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'form-group';
+      wrapper.style.marginTop = '12px';
+      wrapper.innerHTML = '<input class="form-input" type="text" id="inputOutraCidade" placeholder="Digite sua cidade...">';
+      const btnOutra = document.createElement('button');
+      btnOutra.className = 'btn btn-primary';
+      btnOutra.style.marginTop = '8px';
+      btnOutra.textContent = 'Continuar \u279C';
+      btnOutra.disabled = true;
+      btnOutra.id = 'btnOutraCidade';
+      container.parentElement.appendChild(wrapper);
+      container.parentElement.appendChild(btnOutra);
+      inputOutra = document.getElementById('inputOutraCidade');
+      inputOutra.oninput = () => {
+        // Bloquear caracteres invalidos em tempo real
+        inputOutra.value = inputOutra.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s\-'\.]/g, '');
+        const val = inputOutra.value.trim();
+        const cidadeValida = isValidCidade(val);
+        btnOutra.disabled = !cidadeValida;
+        selectedCidade = cidadeValida ? val : null;
+        inputOutra.classList.toggle('valid', cidadeValida);
+        inputOutra.classList.toggle('invalid', val.length > 2 && !cidadeValida);
+      };
+      btnOutra.onclick = () => { if (selectedCidade) goToStep(4); };
+      setTimeout(() => inputOutra.focus(), 100);
+    } else {
+      inputOutra.parentElement.style.display = 'block';
+      document.getElementById('btnOutraCidade').style.display = 'block';
+      setTimeout(() => inputOutra.focus(), 100);
+    }
+  });
+  container.appendChild(outraDiv);
+}
+
+function resetEstadoCidade() {
+  selectedEstado = null;
+  selectedCidade = null;
+  document.getElementById('step3Title').textContent = 'Qual seu estado?';
+  document.getElementById('step3Subtitle').textContent = 'Selecione onde voce atua';
+  document.getElementById('inputBuscaEstado').style.display = 'block';
+  document.getElementById('inputBuscaEstado').value = '';
+  document.getElementById('estadoOptions').style.display = 'grid';
+  document.getElementById('cidadeSection').style.display = 'none';
+  document.querySelectorAll('.option[data-group="estado"]').forEach(o => {
+    o.classList.remove('selected');
+    o.style.display = 'flex';
+  });
+  const inputOutra = document.getElementById('inputOutraCidade');
+  if (inputOutra) { inputOutra.parentElement.style.display = 'none'; }
+  const btnOutra = document.getElementById('btnOutraCidade');
+  if (btnOutra) { btnOutra.style.display = 'none'; }
+}
+
+// 📊 SAGE: Progress motivational messages
+const MOTIVATIONAL = {
+  1: 'Leva menos de 1 minuto',
+  2: '',
+  3: '',
+  4: ''
+};
+
+const TOTAL_STEPS = 4; // perfil, dados, estado/cidade, como conheceu
+
+function goToStep(step) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = step;
+  document.getElementById('step' + currentStep).classList.add('active');
+
+  if (isFallbackMode) {
+    const totalFallback = TOTAL_STEPS + 1; // +1 pra etapa de equipamento
+    const fallbackStep = step + 1;
+    const pct = Math.round(((fallbackStep - 1) / totalFallback) * 100);
+    document.getElementById('progressLabel').textContent = `Etapa ${fallbackStep} de ${totalFallback}`;
+    document.getElementById('progressPercent').textContent = pct + '%';
+  } else {
+    for (let i = 1; i <= 3; i++) {
+      const prog = document.getElementById('prog' + i);
+      if (prog) {
+        prog.classList.remove('active', 'done');
+        if (i < Math.min(currentStep, 4)) prog.classList.add('done');
+        if (i === Math.min(currentStep, 3)) prog.classList.add('active');
+      }
+    }
+    const pct = Math.round(((currentStep - 1) / TOTAL_STEPS) * 100);
+    document.getElementById('progressLabel').textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
+    document.getElementById('progressPercent').textContent = pct + '%';
+  }
+
+  document.getElementById('progressMotivational').textContent = MOTIVATIONAL[currentStep] || '';
+
+  if (step === 2) {
+    setTimeout(() => document.getElementById('inputNome').focus(), 350);
+    trackEvent('form_step2');
+  }
+  if (step === 3) {
+    resetEstadoCidade();
+    trackEvent('form_step3_estado');
+  }
+  if (step === 4) {
+    trackEvent('form_step4_fonte');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep2() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const tel = document.getElementById('inputTelefone').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+
+  const valid = isValidNome(nome) && tel.replace(/\D/g, '').length >= 10 && isValidEmail(email);
+
+  document.getElementById('btnStep2').disabled = !valid;
+}
+
+function maskPhone(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0, 11);
+  if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+  e.target.value = v;
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  ENVIO PARA WHATSAPP                                    ║
+// ╚══════════════════════════════════════════════════════════╝
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  SALVAR DADOS NA PLANILHA (Google Sheets via Apps Script) ║
+// ╚══════════════════════════════════════════════════════════╝
+
+const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwooVN7ogsNcP3t3wOdKiyGSgAfxajkDZapG-JHmZ5rh330PqssorvcG3iE-fCOZ6rhyQ/exec';
+
+function saveToSheet(data) {
+  // Envia em background — nao bloqueia o redirecionamento ao WhatsApp
+  if (!SHEET_WEBHOOK || SHEET_WEBHOOK === 'GOOGLE_APPS_SCRIPT_URL_AQUI') {
+    console.warn('[SHEET] Webhook nao configurado. Dados do lead:', data);
+    return;
+  }
+  // Padronizar tudo em minusculas
+  const normalized = {};
+  for (const [key, value] of Object.entries(data)) {
+    normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
+  }
+  fetch(SHEET_WEBHOOK, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(normalized)
+  }).catch(err => console.error('[SHEET] Erro ao salvar:', err));
+}
+
+function capitalizeNome(str) {
+  return str.toLowerCase().replace(/(?:^|\s)\S/g, l => l.toUpperCase());
+}
+
+// Detectar genero pelo primeiro nome (heuristica brasileira)
+function detectarGenero(nomeCompleto) {
+  const primeiro = nomeCompleto.trim().split(/\s+/)[0].toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove acentos
+
+  // Nomes masculinos que terminam em "a" (excecoes)
+  const masculinosEmA = ['luca','costa','borba','moura','sousa','souza','vieira','pereira',
+    'oliveira','ferreira','silva','moreira','fonseca','lima','rocha','mota','baptista',
+    'nicola','issa','josua','mica','tesla','duda','juca','ruca','buda'];
+
+  // Nomes femininos que NAO terminam em "a"
+  const femininosComum = ['alice','beatriz','raquel','mabel','sueli','liz','miriam','vivian',
+    'karen','carmen','iris','ines','mercedes','pilar','rosangel','jeniffer','jennifer',
+    'nicole','michelle','rachel','maryam','ruth','abigail','gisele','michele','denise',
+    'eliane','solange','celeste','shirley','kelly','kathleen','ingrid','astrid','edith'];
+
+  if (masculinosEmA.includes(primeiro)) return 'M';
+  if (femininosComum.includes(primeiro)) return 'F';
+  if (primeiro.endsWith('a') || primeiro.endsWith('e') && primeiro.length > 3) {
+    // Terminados em "a" sao geralmente femininos
+    // Terminados em "e" - checar se nao sao masculinos comuns
+    const mascEmE = ['jose','jorge','felipe','guilherme','henrique','alexandre','andre',
+      'dante','vicente','luke','bruce','george','mike','pete','axle','rique'];
+    if (primeiro.endsWith('e') && mascEmE.includes(primeiro)) return 'M';
+    if (primeiro.endsWith('a')) return 'F';
+  }
+  return 'M'; // default masculino
+}
+
+function getTratamento(nome, tag) {
+  const genero = detectarGenero(nome);
+  if (tag === 'MEDICO') return genero === 'F' ? 'Dra.' : 'Dr.';
+  if (tag === 'INVESTIDOR') return genero === 'F' ? 'empresaria' : 'empresario';
+  return '';
+}
+
+// Flexao de especialidade por genero
+const ESPECIALIDADE_FEMININA = {
+  'cirurgiao plastico': 'cirurgiã plástica',
+  'medico estetico': 'médica estética',
+  'nutrologo': 'nutróloga',
+  'medico': 'médica'
+};
+
+// Acentuar especialidades masculinas tambem
+const ESPECIALIDADE_ACENTUADA = {
+  'cirurgiao plastico': 'cirurgião plástico',
+  'medico estetico': 'médico estético',
+  'nutrologo': 'nutrólogo',
+  'dermatologista': 'dermatologista',
+  'ginecologista': 'ginecologista',
+  'oftalmologista': 'oftalmologista',
+  'medicina esportiva': 'medicina esportiva',
+  'endocrinologista': 'endocrinologista',
+  'medico': 'médico'
+};
+
+function flexionarEspecialidade(especialidade, nome) {
+  if (!especialidade) return '';
+  const key = especialidade.toLowerCase();
+  const genero = detectarGenero(nome);
+  if (genero === 'F') {
+    return ESPECIALIDADE_FEMININA[key] || ESPECIALIDADE_ACENTUADA[key] || especialidade;
+  }
+  return ESPECIALIDADE_ACENTUADA[key] || especialidade;
+}
+
+function buildWhatsAppMessage() {
+  const nomeRaw = document.getElementById('inputNome').value.trim();
+  const nome = capitalizeNome(nomeRaw);
+  const telefone = document.getElementById('inputTelefone').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+  const instagram = document.getElementById('inputInstagram').value.trim();
+
+  const utmTermKey = (utm.term || '').toLowerCase().replace(/[?]+$/, '').replace(/[\s-]/g, '_');
+  // só aceita equipamento se: (a) usuário selecionou OU (b) utm_term bate no EQUIP_MAP
+  // fallbacks como utm.term.toUpperCase() vazavam IDs/CBCD/eventos pra mensagem
+  const equipamento = (selectedEquipment && selectedEquipment.equip)
+    ? selectedEquipment.equip
+    : (EQUIP_MAP[utmTermKey] || '');
+
+  // Extrair especialidade legivel (ex: "MEDICO - Dermatologista" -> "dermatologista")
+  const perfilParts = selectedProfile.perfil.split(' - ');
+  const especialidade = perfilParts.length > 1 ? perfilParts[1].toLowerCase() : '';
+
+  // Contexto de como conheceu (sourceText do SOURCE_OPTIONS)
+  const sourceCtx = selectedSource?.sourceText || '';
+
+  // Tag do perfil para roteamento de mensagem
+  const tag = selectedProfile.tag;
+  const equipRef = equipamento ? ` sobre o ${equipamento}` : '';
+
+  let msg = '';
+
+  if (tag === 'MEDICO') {
+    const tratamento = getTratamento(nome, tag);
+    const specFlex = flexionarEspecialidade(especialidade, nome);
+    const spec = specFlex ? `, ${specFlex}` : '';
+    msg = `Olá! Sou ${tratamento} ${nome}${spec}.`;
+    if (sourceCtx) msg += ` ${sourceCtx}`;
+    msg += `\nQuero saber mais${equipRef}, valores e condições de aquisição.`;
+
+  } else if (tag === 'INVESTIDOR') {
+    const trat = getTratamento(nome, tag);
+    msg = `Olá! Sou ${nome}, ${trat} do segmento de saúde/estética.`;
+    if (sourceCtx) msg += ` ${sourceCtx}`;
+    msg += `\nQuero entender melhor o investimento${equipRef}, valores e como funciona o modelo de negócio.`;
+
+  } else if (tag === 'EMPRESARIO') {
+    const genero = detectarGenero(nome);
+    const dono = genero === 'F' ? 'dona' : 'dono';
+    msg = `Olá! Sou ${nome}, ${dono} de clínica.`;
+    if (sourceCtx) msg += ` ${sourceCtx}`;
+    msg += `\nQuero saber mais${equipRef}, valores, financiamento e como funciona o suporte técnico.`;
+
+  } else {
+    // PROFISSIONAL (esteticista, fisio, nutricionista, personal, etc)
+    const specFlex = flexionarEspecialidade(especialidade, nome);
+    const spec = specFlex ? `, ${specFlex}` : '';
+    msg = `Olá! Sou ${nome}${spec}.`;
+    if (sourceCtx) msg += ` ${sourceCtx}`;
+    msg += `\nQuero saber mais${equipRef}, valores, condições e se tem demonstração disponível.`;
+  }
+
+  // Instagram como dado adicional (email removido da mensagem — ja vai pra planilha)
+  if (instagram) msg += `\n\nInstagram: ${instagram}`;
+
+  // Salvar dados na planilha automaticamente
+  saveToSheet({ nome: nomeRaw, telefone, email, instagram, especialidade, equipamento,
+    perfil: selectedProfile.perfil, comoConheceu: selectedSource?.value || '',
+    estado: selectedEstado?.sigla || '', cidade: selectedCidade || '',
+    source: utm.source, medium: utm.medium, campaign: utm.campaign,
+    brand: activeBrand?.name || '', timestamp: new Date().toISOString(),
+    tipo: 'profissional'
+  });
+
+  return msg;
+}
+
+function submitForm() {
+  const nome = document.getElementById('inputNome').value.trim().toUpperCase();
+  const telefone = document.getElementById('inputTelefone').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+
+  // CLIENTE FINAL: pagina de obrigado simples
+  if (selectedProfile.tag === 'CLIENTE FINAL') {
+    const utmTermKey = (utm.term || '').toLowerCase().replace(/[?]+$/, '').replace(/[\s-]/g, '_');
+    const equip = (selectedEquipment && selectedEquipment.equip)
+      ? selectedEquipment.equip
+      : (EQUIP_MAP[utmTermKey] || 'NAO INFORMADO');
+
+    const estado = selectedEstado?.sigla || '';
+    const cidade = selectedCidade || '';
+
+    // Salvar dados na planilha
+    const instagram = document.getElementById('inputInstagram') ? document.getElementById('inputInstagram').value.trim() : '';
+    saveToSheet({ nome, telefone, email, instagram, especialidade: '',
+      equipamento: equip, perfil: 'cliente final', comoConheceu: '',
+      tipo: 'cliente_final', estado, cidade,
+      source: utm.source, medium: utm.medium, campaign: utm.campaign,
+      brand: activeBrand?.name || '', timestamp: new Date().toISOString()
+    });
+
+    document.getElementById('step4').classList.remove('active');
+    showSuccess(null, true);
+    try { history.pushState(null, '', '/obrigado'); fbq('track', 'PageView'); } catch(e) {}
+    trackEvent('form_submit_client_final', { cidade, estado });
+    return;
+  }
+
+  // DEMAIS PERFIS (medicos, clinicas, empresarios): WhatsApp DIRETO
+  try {
+    const message = buildWhatsAppMessage();
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    const utmTermKey = (utm.term || '').toLowerCase().replace(/[?]+$/, '').replace(/[\s-]/g, '_');
+    const equipamento = (selectedEquipment && selectedEquipment.equip)
+      ? selectedEquipment.equip
+      : (EQUIP_MAP[utmTermKey] || 'NAO INFORMADO');
+    try { history.pushState(null, '', '/obrigado'); fbq('track', 'PageView'); } catch(e) {}
+    trackEvent('form_submit', { profile: selectedProfile.tag, equipment: equipamento });
+
+    // Redirect IMEDIATO ao WhatsApp
+    window.open(waUrl, '_blank');
+
+  } catch (err) {
+    console.error('Erro ao redirecionar:', err);
+    document.getElementById('step4').classList.add('active');
+    const errorEl = document.getElementById('errorMsg');
+    errorEl.textContent = 'Ops! Algo deu errado. Tente novamente.';
+    errorEl.classList.add('visible');
+    trackEvent('form_error', { error: err.message });
+  }
+}
+
+function showSuccess(waUrl, isClienteFinal) {
+  document.getElementById('stepSuccess').classList.add('active');
+  for (let i = 1; i <= 3; i++) document.getElementById('prog' + i).classList.add('done');
+  document.getElementById('progressPercent').textContent = '100%';
+  document.getElementById('progressLabel').textContent = 'Concluído!';
+  document.getElementById('progressMotivational').textContent = '';
+
+  if (isClienteFinal) {
+    document.getElementById('successTitle').textContent = 'Obrigado!';
+    document.getElementById('successText').innerHTML =
+      'Recebemos seu interesse! Vamos te conectar com um de nossos <strong>parceiros</strong> mais próximo de você.';
+    document.getElementById('successCardTitle').textContent = 'Próximo passo';
+    document.getElementById('successCardDesc').innerHTML =
+      'Um de nossos consultores entrará em contato para te direcionar ao <strong>parceiro ideal</strong> na sua região, com toda a segurança e expertise que você merece.';
+
+    // Esconder botão WhatsApp, fallback e countdown
+    document.getElementById('btnWhatsapp').style.display = 'none';
+    document.getElementById('successFallback').style.display = 'none';
+    document.getElementById('successCountdown').style.display = 'none';
+  }
+}
+
+// Iniciar
+document.addEventListener('DOMContentLoaded', init);
+
+
+// ═══════════════════════════════════════════════════════════════
+// ▼▼▼ INJECAO MODO DE TESTE — REMOVER ANTES DE IR PARA PRODUCAO ▼▼▼
+// ═══════════════════════════════════════════════════════════════
+
+// Intercepta saveToSheet — NAO envia nada em modo teste
+const _origSaveToSheet = window.saveToSheet;
+window.saveToSheet = function(data){
+  console.log('[TESTE] saveToSheet INTERCEPTADO. Nao envia. Payload seria:', data);
+  window.__testLastSheetPayload = data;
+};
+
+// Intercepta submitForm — mostra modal em vez de window.open
+const _origSubmitForm = window.submitForm;
+window.submitForm = function(){
+  const nome = document.getElementById('inputNome').value.trim().toUpperCase();
+  const tag = selectedProfile?.tag || '(sem perfil)';
+  const perfil = selectedProfile?.perfil || '';
+  const reason = window.__testReclassReason;
+
+  let title, body, color;
+  if (tag === 'CLIENTE FINAL') {
+    title = '🔄 Lead reclassificado como CLIENTE FINAL';
+    color = '#6366f1';
+    body = '<strong style="color:#a5b4fc">Destino:</strong> Pagina "obrigado" + planilha (NAO abre WhatsApp do SDR).<br><br>'
+         + '<strong style="color:#a5b4fc">Tag final:</strong> CLIENTE FINAL<br>'
+         + '<strong style="color:#a5b4fc">Perfil:</strong> ' + perfil + '<br>'
+         + (reason ? '<strong style="color:#a5b4fc">Motivo da reclassificacao:</strong> <em>' + reason + '</em>' : '');
+  } else {
+    title = '✅ Lead ACEITO como ' + tag;
+    color = '#10b981';
+    body = '<strong style="color:#86efac">Destino:</strong> Abriria <code>wa.me/' + (typeof WHATSAPP_NUMBER !== 'undefined' ? WHATSAPP_NUMBER : '?') + '</code> com mensagem pre-preenchida.<br><br>'
+         + '<strong style="color:#86efac">Tag final:</strong> ' + tag + '<br>'
+         + '<strong style="color:#86efac">Perfil:</strong> ' + perfil + '<br>'
+         + '<strong style="color:#86efac">Nome:</strong> ' + nome;
+  }
+
+  document.getElementById('testResultTitle').innerHTML = title;
+  document.getElementById('testResultTitle').style.color = color;
+  document.getElementById('testResultBody').innerHTML = body;
+  document.getElementById('testResultPayload').textContent = JSON.stringify({
+    tag_final: tag,
+    perfil: perfil,
+    reclassified: !!reason,
+    reclassified_reason: reason || null,
+    nome: nome,
+    sheet_payload: window.__testLastSheetPayload || null
+  }, null, 2);
+  document.getElementById('testResultModal').style.display = 'flex';
+
+  // NAO chama o original — nao abre WhatsApp
+  return false;
+};
+// ═══════════════════════════════════════════════════════════════
+// ▲▲▲ FIM DA INJECAO MODO DE TESTE ▲▲▲
+// ═══════════════════════════════════════════════════════════════
+</script>
+
+</body>
+</html>
