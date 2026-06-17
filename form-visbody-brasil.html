@@ -478,7 +478,7 @@ fbq('track', 'PageView');
   let selectedRmktCta = '';
 
   // Webhook do Google Apps Script (grava na planilha Cliente Final/Profissionais YYYY-MM)
-  const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwooVN7ogsNcP3t3wOdKiyGSgAfxajkDZapG-JHmZ5rh330PqssorvcG3iE-fCOZ6rhyQ/exec';
+  const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyU5zrju0ytnSRvT56oiaIXo91L87HZtGmo0U5Ha7a0IjAnSHhduxuLtvRThn4kTlHMtA/exec';
 
   const urlParams = new URLSearchParams(window.location.search);
   const equipamento = urlParams.get('equipamento') || '';
@@ -574,7 +574,7 @@ fbq('track', 'PageView');
 
   function saveToSheet(data) {
     if (!SHEET_WEBHOOK) return;
-    const normalized = {};
+    const normalized = { _token: 'cl-forms-2026-9xK7mQ' };
     for (const [key, value] of Object.entries(data)) {
       normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
     }
