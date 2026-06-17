@@ -24,6 +24,9 @@ unyque_posts_nossos.json
 # Codigo backend que nao roda no Vercel
 google-apps-script.js
 create_urls_excel.py
+# PHP nao executa no Vercel — seria servido como texto e VAZA o RD_TOKEN
+api-rdstation.php
+*.php
 
 # Documentacao interna
 *.md

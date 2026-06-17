@@ -27,6 +27,21 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // ── Allowlist de origem: só aceita chamadas do próprio site ──
+  // Bloqueia abuso externo (curl/outros sites) da API Infosimples, que é paga.
+  // POST via fetch sempre envia o cabeçalho Origin, então o form legítimo passa.
+  const ALLOWED_HOSTS = ['form.contourline.com.br', 'localhost', '127.0.0.1'];
+  const originRef = req.headers.origin || req.headers.referer || '';
+  let originHost = '';
+  try { originHost = originRef ? new URL(originRef).hostname : ''; } catch (e) { originHost = ''; }
+  const originAllowed = originHost !== '' && (
+    ALLOWED_HOSTS.includes(originHost) || originHost.endsWith('.vercel.app')
+  );
+  if (!originAllowed) {
+    res.status(403).json({ valido: false, erro: 'Origem não autorizada.' });
+    return;
+  }
+
   // ── Body (Vercel auto-parseia JSON; fallback pra stream cru) ──
   let body = req.body;
   if (!body || typeof body !== 'object') {
