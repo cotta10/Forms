@@ -935,8 +935,9 @@
       align-items: center;
       justify-content: center;
       gap: var(--space-sm);
-      padding: var(--space-sm) var(--space-md);
+      padding: 10px var(--space-lg);
       background: var(--accent-subtle);
+      border: 1px solid var(--border-default);
       border-radius: var(--radius-full);
       margin-bottom: var(--space-lg);
       opacity: 0;
@@ -944,7 +945,15 @@
     }
 
     .social-proof-icon {
-      font-size: 14px;
+      font-size: 0;
+      line-height: 1;
+    }
+    .social-proof-icon::before {
+      content: "\25C6";
+      font-size: 8px;
+      color: var(--accent);
+      position: relative;
+      top: -1px;
     }
 
     .social-proof-text {
@@ -1549,7 +1558,7 @@
 
   <!-- 📊 SAGE: Social Proof -->
   <div class="social-proof" id="socialProof">
-    <span class="social-proof-icon">&#9889;</span>
+    <span class="social-proof-icon" aria-hidden="true"></span>
     <span class="social-proof-text" id="socialProofText"></span>
   </div>
 
@@ -1662,6 +1671,12 @@
     <div class="form-group">
       <label class="form-label">Instagram</label>
       <input class="form-input" type="text" id="inputInstagram" placeholder="@seuperfil">
+    </div>
+
+    <!-- Honeypot anti-bot: invisível para humanos. Se vier preenchido, é robô e descartamos o envio. -->
+    <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;">
+      <label for="hpWebsite">Deixe este campo em branco</label>
+      <input type="text" id="hpWebsite" name="website" tabindex="-1" autocomplete="off">
     </div>
 
     <button class="btn btn-primary" id="btnStep2" disabled onclick="goToStep(3)">Continuar &#10140;</button>
@@ -1845,17 +1860,19 @@
 // ║  SDR ROTATION                                           ║
 // ╚══════════════════════════════════════════════════════════╝
 
-const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431", "553196080940"];
+const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431"];
+const SDR_NAMES = { "553197960339": "Paulo", "553199871782": "Dani", "553197822431": "Luiza" };
 const WHATSAPP_NUMBER = SDR_NUMBERS[Math.floor(Math.random() * SDR_NUMBERS.length)];
+const SDR_NAME = SDR_NAMES[WHATSAPP_NUMBER] || WHATSAPP_NUMBER;
 
 // ╔══════════════════════════════════════════════════════════╗
 // ║  MATCHMAKING — Base de Parceiros                        ║
 // ╚══════════════════════════════════════════════════════════╝
+// Matchmaking DESATIVADO: parceiros.json contém base de clientes (nomes/cidade/equipamento = dado pessoal/LGPD)
+// e NÃO deve ser exposto publicamente. A etapa de localização já foi removida do fluxo (ver "sem matchmaking").
+// Para reativar com segurança, criar um endpoint serverless (ex.: /api/parceiros) que receba estado/cidade/equip
+// e retorne só os matches — nunca servir a base inteira no client.
 let parceirosDB = [];
-fetch('parceiros.json').then(r => r.json()).then(data => {
-  parceirosDB = data;
-  console.log(`[Matchmaking] ${data.length} parceiros carregados`);
-}).catch(err => console.warn('[Matchmaking] Falha ao carregar parceiros:', err));
 
 function findParceiros(estado, cidade, equipamento) {
   if (!parceirosDB.length) return { exact: [], stateMatch: [], total: 0 };
@@ -2950,19 +2967,28 @@ function maskPhone(e) {
 // ║  SALVAR DADOS NA PLANILHA (Google Sheets via Apps Script) ║
 // ╚══════════════════════════════════════════════════════════╝
 
-const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwooVN7ogsNcP3t3wOdKiyGSgAfxajkDZapG-JHmZ5rh330PqssorvcG3iE-fCOZ6rhyQ/exec';
+const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzmE44H5cnmYT0vE-Ky-vfu38HqMf4Pp4H8NEvRqzJpJH1pSmDtpJ2GreMdjK2hJQLjmg/exec';
+// Token compartilhado com o Apps Script (anti-spam). Valide no doPost do Apps Script.
+const SHEET_TOKEN = 'cl-forms-2026-9xK7mQ';
 
 function saveToSheet(data) {
+  // Honeypot anti-bot: se o campo oculto veio preenchido, é robô — descarta silenciosamente
+  const hp = document.getElementById('hpWebsite');
+  if (hp && hp.value.trim() !== '') {
+    console.warn('[SHEET] honeypot acionado — envio ignorado (bot)');
+    return;
+  }
   // Envia em background — nao bloqueia o redirecionamento ao WhatsApp
   if (!SHEET_WEBHOOK || SHEET_WEBHOOK === 'GOOGLE_APPS_SCRIPT_URL_AQUI') {
     console.warn('[SHEET] Webhook nao configurado. Dados do lead:', data);
     return;
   }
-  // Padronizar tudo em minusculas
-  const normalized = {};
+  // Padronizar tudo em minusculas + anexar token de autenticidade
+  const normalized = { _token: SHEET_TOKEN };
   for (const [key, value] of Object.entries(data)) {
     normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
   }
+  if (data.tipo !== 'cliente_final') normalized.sdr = SDR_NAME; // SDR que recebeu o lead
   fetch(SHEET_WEBHOOK, {
     method: 'POST',
     mode: 'no-cors',

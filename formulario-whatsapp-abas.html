@@ -1847,6 +1847,12 @@
       <input class="form-input" type="text" id="inputInstagram" placeholder="@seuperfil">
     </div>
 
+    <!-- Honeypot anti-bot: invisível para humanos. Se vier preenchido, é robô e descartamos o envio. -->
+    <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;">
+      <label for="hpWebsite">Deixe este campo em branco</label>
+      <input type="text" id="hpWebsite" name="website" tabindex="-1" autocomplete="off">
+    </div>
+
     <button class="btn btn-primary" id="btnStep2" disabled onclick="goToStep(3)">Continuar &#10140;</button>
     <button class="btn btn-back" onclick="goToStep(1)">&#8592; Voltar</button>
   </div>
@@ -2028,17 +2034,17 @@
 // ║  SDR ROTATION                                           ║
 // ╚══════════════════════════════════════════════════════════╝
 
-const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431", "553196080940"];
+const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431"];
+const SDR_NAMES = { "553197960339": "Paulo", "553199871782": "Dani", "553197822431": "Luiza" };
 const WHATSAPP_NUMBER = SDR_NUMBERS[Math.floor(Math.random() * SDR_NUMBERS.length)];
+const SDR_NAME = SDR_NAMES[WHATSAPP_NUMBER] || WHATSAPP_NUMBER;
 
 // ╔══════════════════════════════════════════════════════════╗
 // ║  MATCHMAKING — Base de Parceiros                        ║
 // ╚══════════════════════════════════════════════════════════╝
+// Matchmaking DESATIVADO: parceiros.json é base de clientes (dado pessoal/LGPD) e não vai pro client público.
+// Reativar só via endpoint serverless que retorne apenas os matches (nunca a base inteira).
 let parceirosDB = [];
-fetch('parceiros.json').then(r => r.json()).then(data => {
-  parceirosDB = data;
-  console.log(`[Matchmaking] ${data.length} parceiros carregados`);
-}).catch(err => console.warn('[Matchmaking] Falha ao carregar parceiros:', err));
 
 function findParceiros(estado, cidade, equipamento) {
   if (!parceirosDB.length) return { exact: [], stateMatch: [], total: 0 };
@@ -2547,24 +2553,33 @@ function brandToTab(key) {
   return (key === 'contourlinemed') ? 'contourline_med' : key;
 }
 
-// Cada marca → seu formulário dedicado (o hub redireciona pra cá)
-const BRAND_FORM = {
-  contourline:     'form-contourline.html',
-  contourline_med: 'form-contourline-med.html',
-  contourlinemed:  'form-contourline-med.html',
-  lumenis:         'form-lumenis-oficial.html',
-  bodyhealth:      'form-body-health.html',
-  visbody:         'form-visbody-brasil.html'
+// Form NOVO único (design aprovado) — o hub redireciona TODAS as marcas pra cá
+const TARGET_FORM = 'formulario-whatsapp.html';
+
+// Catálogo (eq.equip) → utm_term reconhecido pelo EQUIP_MAP do formulario-whatsapp.html
+const EQUIP_TO_TERM = {
+  "HIPRO": "hipro", "MultiShape": "multishape", "X-Tonus": "xtonus", "Focuskin": "focuskin",
+  "HivePro": "hivepro", "Ultralift": "ultralift", "Reverso": "reverso", "Folix": "folix",
+  "HIPRO-Med": "hipromed", "Supreme": "supremepro",
+  "Stellar": "stellar", "ULTRApulse": "ultrapulse", "NuEraTight": "nueratight",
+  "SplendorX": "splendor", "Trilift": "trilift",
+  "Crystal3D": "crystal", "Enygma": "enygma", "Unyque": "unyque", "Iconyc": "iconyc",
+  "S30": "s30", "M30": "m30", "Creator600": "creator600"
 };
 
-// Redireciona pro form dedicado da marca, levando o equipamento + todas as UTMs originais
+// Redireciona pro form NOVO levando marca (utm_brand) + equipamento (utm_term) e preservando as UTMs originais
 function gotoForm(brandKey, equip) {
-  const file = BRAND_FORM[brandKey] || BRAND_FORM.contourline;
-  const qs = new URLSearchParams(window.location.search);  // preserva utm_source/medium/campaign/term/content/brand
-  if (equip) qs.set('equipamento', equip);
+  const qs = new URLSearchParams(window.location.search);  // preserva utm_source/medium/campaign/content
+  qs.set('utm_brand', brandKey);
+  if (equip) {
+    qs.set('utm_term', EQUIP_TO_TERM[equip] || equip.toLowerCase().replace(/[\s-]/g, ''));
+  } else {
+    qs.delete('utm_term');
+  }
+  qs.delete('equipamento');  // o form novo usa utm_term, não equipamento
   trackEvent('hub_equip_click', { brand: brandKey, equip: equip || '' });
   const q = qs.toString();
-  window.location.href = file + (q ? ('?' + q) : '');
+  window.location.href = TARGET_FORM + (q ? ('?' + q) : '');
 }
 
 // Aplica uma marca: tema, logo, header, perfis e destaca a aba.
@@ -3182,19 +3197,28 @@ function maskPhone(e) {
 // ║  SALVAR DADOS NA PLANILHA (Google Sheets via Apps Script) ║
 // ╚══════════════════════════════════════════════════════════╝
 
-const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwooVN7ogsNcP3t3wOdKiyGSgAfxajkDZapG-JHmZ5rh330PqssorvcG3iE-fCOZ6rhyQ/exec';
+const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzmE44H5cnmYT0vE-Ky-vfu38HqMf4Pp4H8NEvRqzJpJH1pSmDtpJ2GreMdjK2hJQLjmg/exec';
+// Token compartilhado com o Apps Script (anti-spam). Mesmo token do formulario-whatsapp.html.
+const SHEET_TOKEN = 'cl-forms-2026-9xK7mQ';
 
 function saveToSheet(data) {
+  // Honeypot anti-bot: se o campo oculto veio preenchido, é robô — descarta silenciosamente
+  const hp = document.getElementById('hpWebsite');
+  if (hp && hp.value.trim() !== '') {
+    console.warn('[SHEET] honeypot acionado — envio ignorado (bot)');
+    return;
+  }
   // Envia em background — nao bloqueia o redirecionamento ao WhatsApp
   if (!SHEET_WEBHOOK || SHEET_WEBHOOK === 'GOOGLE_APPS_SCRIPT_URL_AQUI') {
     console.warn('[SHEET] Webhook nao configurado. Dados do lead:', data);
     return;
   }
-  // Padronizar tudo em minusculas
-  const normalized = {};
+  // Padronizar tudo em minusculas + anexar token de autenticidade
+  const normalized = { _token: SHEET_TOKEN };
   for (const [key, value] of Object.entries(data)) {
     normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
   }
+  if (data.tipo !== 'cliente_final') normalized.sdr = SDR_NAME; // SDR que recebeu o lead
   fetch(SHEET_WEBHOOK, {
     method: 'POST',
     mode: 'no-cors',

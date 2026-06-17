@@ -477,8 +477,10 @@ fbq('track', 'PageView');
 </div>
 
 <script>
-  const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431", "553196080940"];
+  const SDR_NUMBERS = ["553197960339", "553199871782", "553197822431"];
+  const SDR_NAMES = { "553197960339": "Paulo", "553199871782": "Dani", "553197822431": "Luiza" };
   const WHATSAPP_NUMBER = SDR_NUMBERS[Math.floor(Math.random() * SDR_NUMBERS.length)];
+  const SDR_NAME = SDR_NAMES[WHATSAPP_NUMBER] || WHATSAPP_NUMBER;
   const BRAND_NAME = 'Contourline Med';
   const totalSteps = 5;
   let currentStep = 1;
@@ -614,6 +616,7 @@ fbq('track', 'PageView');
     for (const [key, value] of Object.entries(data)) {
       normalized[key] = (typeof value === 'string') ? value.toLowerCase() : value;
     }
+    if (data.tipo !== 'cliente_final') normalized.sdr = SDR_NAME; // SDR que recebeu o lead
     fetch(SHEET_WEBHOOK, {
       method: 'POST',
       mode: 'no-cors',

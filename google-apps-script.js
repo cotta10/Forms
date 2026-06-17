@@ -38,7 +38,7 @@ var HEADERS = [
   'Data', 'Nome', 'Telefone', 'Email', 'Instagram', 'Perfil',
   'Especialidade', 'Equipamento', 'Como Conheceu', 'Marca',
   'Estado', 'Cidade', 'Source', 'Medium', 'Campaign', 'Campaign ID',
-  'CRM', 'CRM Validado', 'CRM Nome'
+  'CRM', 'CRM Validado', 'CRM Nome', 'SDR'
 ];
 
 
@@ -129,7 +129,8 @@ function doPost(e) {
       campaignRaw,     // <-- ID bruto (vazio se direto/organico)
       (data.crm || '').toUpperCase(),         // <-- CRM digitado (forms medicos: Lumenis / Contourline Med)
       (data.crm_valido || '').toLowerCase(),  // <-- sim | nao | erro | '' (validacao CFM/Infosimples)
-      (data.crm_nome || '').toLowerCase()     // <-- nome retornado pelo CFM quando valido
+      (data.crm_nome || '').toLowerCase(),    // <-- nome retornado pelo CFM quando valido
+      (data.sdr || '')                        // <-- SDR que recebeu o lead (rotatividade WhatsApp)
     ];
 
     var perfil = (data.perfil || '').toLowerCase();
