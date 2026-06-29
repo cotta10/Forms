@@ -1273,7 +1273,7 @@ const EQUIP_MAP = {
 
 // IDs RD Station CRM
 const RD = {
-  proxyUrl: "api-rdstation.php",
+  proxyUrl: "/api/rdstation", // função serverless no Vercel (Node) com dedup; token em RD_STATION_TOKEN
   pipeline_sdr: "699634f0cb5aa400132abc7d",
   stage_sondagem: "699634f0cb5aa400132abc7f",
   fields: {
